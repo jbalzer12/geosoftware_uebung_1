@@ -31,9 +31,16 @@
                     var l1 = [[1, 0], [1, 4]];
                     var l2 = [[0, 2], [4, 2]];
 
-                    //Intersectio between line 1 and line 2
+                    var test_polygon = [[0.5, 0],[0.5, 5],[3, 5],[3, 0],[0.5, 0]];
+
+                    //Intersection between line 1 and line 2 test
                     console.log("Intersection between line 1 and line 2 is at lon/lat: ", 
                     lineIntersection(l1[0][0], l1[0][1], l1[1][0], l1[1][1], l2[0][0], l2[0][1], l2[1][0], l2[1][1]));
+
+                    //Point in Polygon test
+                    console.log("Is p2 inside the test_polygon? ", pointInPolygon(p2, test_polygon)); //inside
+                    console.log("Is p4 inside the test_polygon? ", pointInPolygon(p4, test_polygon)); //outside
+                    console.log("Is p1 inside the test_polygon? ", pointInPolygon(p1, test_polygon)); //on border
 
 
                 function pointLIsteToPointArray (pointList) {
