@@ -3,7 +3,6 @@
         <head>
             <meta charset="UTF-8">
             <title>Geosoftware I - Uebung 1</title>
-
             <script type="text/javascript" src="data/polygon.js"></script>
             <script type="text/javascript" src="data/route.js"></script>
             <script type="text/javascript" src="lib/uebung_1.js"></script>
@@ -12,15 +11,15 @@
             <script>
                 //Tests
                 //Data preview
-                //console.log(polygon); //uses logitute and latitute
-                //console.log(route); //uses logitute and latitute
+                console.log(polygon); //uses logitute and latitute
+                console.log(route); //uses logitute and latitute
 
                 //Extract two points
-                //var pointa = route[0]
-                //var pointb = route[1]
+                var pointa = route[0]
+                var pointb = route[1]
 
                 //calculate distance between the two extracted points
-                //console.log(distanceBetweenTwoPoints(pointa[1], pointa[0], pointb[1], pointb[0]));
+                console.log("Distance between Point a and Point b: ", distanceBetweenTwoPoints(pointa[1], pointa[0], pointb[1], pointb[0]));
 
                 //Geometry test
                 var p1 = [1, 0];
@@ -28,23 +27,24 @@
                 var p3 = [0, 2];
                 var p4 = [4, 2];
 
-                var l1 = [[1, 0], [1, 4]];
-                var l2 = [[0, 2], [4, 2]];
+                var l1 = [p1, p2];
+                var l2 = [p3, p4];
+                var l3 = [p2, p4];
 
                 var test_polygon = [[0.5, 0],[0.5, 5],[3, 5],[3, 0],[0.5, 0]];
 
-                //Intersection between line 1 and line 2 test
                 console.log("Intersection between line 1 and line 2 is at lon/lat: ", 
                 lineIntersection(l1[0][0], l1[0][1], l1[1][0], l1[1][1], l2[0][0], l2[0][1], l2[1][0], l2[1][1]));
 
-                //Point in Polygon test
                 console.log("Is p2 inside the test_polygon? ", pointInPolygon(p2, test_polygon)); //inside
                 console.log("Is p4 inside the test_polygon? ", pointInPolygon(p4, test_polygon)); //outside
                 console.log("Is p1 inside the test_polygon? ", pointInPolygon(p1, test_polygon)); //on border
 
+                console.log("The outward part of the given segment is: ", splitSegment(l3, test_polygon));
+
                 //Run
-                console.log(getIntersectingSections(route, polygon));
-                console.log(getContainedSections(route, polygon));
+                console.log(getIntersectingSegments(route, polygon));
+                console.log(getContainedSegments(route, polygon));
 
 
             </script>
