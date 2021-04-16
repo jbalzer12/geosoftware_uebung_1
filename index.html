@@ -3,46 +3,48 @@
         <head>
             <meta charset="UTF-8">
             <title>Geosoftware I - Uebung 1</title>
+
             <script type="text/javascript" src="data/polygon.js"></script>
             <script type="text/javascript" src="data/route.js"></script>
         </head>
         <body>
             <script>
-
-                
                 //Tests
-                    //Data preview
-                    //console.log(polygon); //uses logitute and latitute
-                    //console.log(route); //uses logitute and latitute
+                //Data preview
+                //console.log(polygon); //uses logitute and latitute
+                //console.log(route); //uses logitute and latitute
 
-                    //Extract two points
-                    //var pointa = route[0]
-                    //var pointb = route[1]
+                //Extract two points
+                //var pointa = route[0]
+                //var pointb = route[1]
 
-                    //calculate distance between the two extracted points
-                    //console.log(distanceBetweenTwoPoints(pointa[1], pointa[0], pointb[1], pointb[0]));
+                //calculate distance between the two extracted points
+                //console.log(distanceBetweenTwoPoints(pointa[1], pointa[0], pointb[1], pointb[0]));
 
-                    //Geometry test
-                    var p1 = [1, 0];
-                    var p2 = [1, 4];
-                    var p3 = [0, 2];
-                    var p4 = [4, 2];
+                //Geometry test
+                var p1 = [1, 0];
+                var p2 = [1, 4];
+                var p3 = [0, 2];
+                var p4 = [4, 2];
 
-                    var l1 = [[1, 0], [1, 4]];
-                    var l2 = [[0, 2], [4, 2]];
+                var l1 = [[1, 0], [1, 4]];
+                var l2 = [[0, 2], [4, 2]];
 
-                    var test_polygon = [[0.5, 0],[0.5, 5],[3, 5],[3, 0],[0.5, 0]];
+                var test_polygon = [[0.5, 0],[0.5, 5],[3, 5],[3, 0],[0.5, 0]];
 
-                    //Intersection between line 1 and line 2 test
-                    console.log("Intersection between line 1 and line 2 is at lon/lat: ", 
-                    lineIntersection(l1[0][0], l1[0][1], l1[1][0], l1[1][1], l2[0][0], l2[0][1], l2[1][0], l2[1][1]));
+                //Intersection between line 1 and line 2 test
+                console.log("Intersection between line 1 and line 2 is at lon/lat: ", 
+                lineIntersection(l1[0][0], l1[0][1], l1[1][0], l1[1][1], l2[0][0], l2[0][1], l2[1][0], l2[1][1]));
 
-                    //Point in Polygon test
-                    console.log("Is p2 inside the test_polygon? ", pointInPolygon(p2, test_polygon)); //inside
-                    console.log("Is p4 inside the test_polygon? ", pointInPolygon(p4, test_polygon)); //outside
-                    console.log("Is p1 inside the test_polygon? ", pointInPolygon(p1, test_polygon)); //on border
+                //Point in Polygon test
+                console.log("Is p2 inside the test_polygon? ", pointInPolygon(p2, test_polygon)); //inside
+                console.log("Is p4 inside the test_polygon? ", pointInPolygon(p4, test_polygon)); //outside
+                console.log("Is p1 inside the test_polygon? ", pointInPolygon(p1, test_polygon)); //on border
 
+                //Run
+                console.log(getIntersectingSections(route, polygon));
 
+                //Functions
                 function pointLIsteToPointArray (pointList) {
                     pointArray = Array.of(pointList);
                     return pointArray;
@@ -53,7 +55,7 @@
                     var c = Math.cos;
                     var a = 0.5 - c((lat2 - lat1) * p)/2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))/2;
 
-                    return (12742 * Math.asin(Math.sqrt(a))) * 1000; // 2 * R; R = 6371 km !!Must be changenged to conform to WGS-84
+                    return (12742 * Math.asin(Math.sqrt(a))) * 1000; //2 * R; R = 6371 km !! Must be changenged to 6378 conform to WGS-84 
                 }
 
                 function degToRad(deg) {
@@ -88,6 +90,19 @@
                     var intersectLat = ((lon1 * lat2 - lat1 * lon2) * (lat3 - lat4) - (lat1 - lat2) * (lon3 * lat4 - lat3 * lon4)) / d;
 
                     return [intersectLon, intersectLat]
+                }
+
+                function getIntersectingSections(path, polygon) {
+                    var intersectingPaths = [];
+                    var i;
+                    for (i = 0; i < path.length-1; i++) {
+                        //both verticies are inside the polygon
+                        if(pointInPolygon(path[i], polygon) && pointInPolygon(path[i+1], polygon)){
+                        intersectingPaths.push([path[i],path[i+1]]);
+                    }
+                    //one point is inside the polygon
+                    }
+                    return intersectingPaths;
                 }
             </script>
         </body>
