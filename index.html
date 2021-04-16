@@ -8,15 +8,33 @@
         </head>
         <body>
             <script>
-                console.log(polygon); //uses logitute and latitute
-                console.log(route); //uses logitute and latitute
 
-                var pointa = route[0]
-                var pointb = route[1]
+                
+                //Tests
+                    //Data preview
+                    //console.log(polygon); //uses logitute and latitute
+                    //console.log(route); //uses logitute and latitute
 
-                console.log(pointInPolygon(pointa, polygon));
+                    //Extract two points
+                    //var pointa = route[0]
+                    //var pointb = route[1]
 
-                console.log(distanceBetweenTwoPoints(pointa[1], pointa[0], pointb[1], pointb[0]));
+                    //calculate distance between the two extracted points
+                    //console.log(distanceBetweenTwoPoints(pointa[1], pointa[0], pointb[1], pointb[0]));
+
+                    //Geometry test
+                    var p1 = [1, 0];
+                    var p2 = [1, 4];
+                    var p3 = [0, 2];
+                    var p4 = [4, 2];
+
+                    var l1 = [[1, 0], [1, 4]];
+                    var l2 = [[0, 2], [4, 2]];
+
+                    //Intersectio between line 1 and line 2
+                    console.log("Intersection between line 1 and line 2 is at lon/lat: ", 
+                    lineIntersection(l1[0][0], l1[0][1], l1[1][0], l1[1][1], l2[0][0], l2[0][1], l2[1][0], l2[1][1]));
+
 
                 function pointLIsteToPointArray (pointList) {
                     pointArray = Array.of(pointList);
@@ -52,6 +70,18 @@
                     }
                     return inside;
                 };
+
+                function lineIntersection(lon1, lat1, lon2, lat2, lon3, lat3, lon4, lat4) { 
+                    //line 1 is defined by lat1, lon1 and lat2, lon2
+                    //line 1 is defined by lat3, lon3 and lat4, lon4
+
+                    var d = (lon1 - lon2) * (lat3 - lat4) - (lat1 - lat2) * (lon3 - lon4);
+
+                    var intersectLon = ((lon1 * lat2 - lat1*lon2) * (lon3 - lon4) - (lon1 - lon2) * (lon3 * lat4 - lat3 * lon4)) / d;
+                    var intersectLat = ((lon1 * lat2 - lat1 * lon2) * (lat3 - lat4) - (lat1 - lat2) * (lon3 * lat4 - lat3 * lon4)) / d;
+
+                    return [intersectLon, intersectLat]
+                }
             </script>
         </body>
 </html> 
