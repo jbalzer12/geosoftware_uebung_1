@@ -19,7 +19,7 @@
                 var pointb = route[1]
 
                 //calculate distance between the two extracted points
-                console.log("Distance between Point a and Point b: ", distanceBetweenTwoPoints(pointa, pointb));
+                //console.log("Distance between Point a and Point b: ", distanceBetweenTwoPoints(pointa, pointb));
 
                 //Geometry test
                 var p1 = [1, 0];
@@ -34,6 +34,7 @@
                 var l2 = [p3, p4];
                 var l3 = [p2, p4];
                 var l4 = [p6, p7];
+                var l5 = [p3, p6];
 
                 var test_polygon = [[0.5, 0],[0.5, 5],[3, 5],[3, 0],[0.5, 0]];
 
@@ -48,7 +49,16 @@
                 //console.log(getDirection(p1, p2, p3)) // 1 left
                 //console.log(getDirection(p1, p2, p5)) // 0 on the segment
 
-                console.log(splitSegment(l4, test_polygon));
+                //console.log(splitSegment(l4, test_polygon));
+
+                //Split segment test
+                //console.log(splitSegment(l4, test_polygon));
+                //console.log(splitSegment(l5, test_polygon));
+
+                var pA = [7.60285, 51.96427];
+                var pB = [7.60492, 51.96441];
+                var lA = [pA, pB];
+                console.log(splitSegment(lA, polygon));
 
                 //Run
                 //console.log(getSegments(route, polygon));
