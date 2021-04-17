@@ -27,28 +27,32 @@
                 var p3 = [0, 2];
                 var p4 = [4, 2];
                 var p5 = [1, 2];
+                var p6 = [2, 2.5];
+                var p7 = [5, 2.5];
 
                 var l1 = [p1, p2];
                 var l2 = [p3, p4];
                 var l3 = [p2, p4];
+                var l4 = [p6, p7];
 
                 var test_polygon = [[0.5, 0],[0.5, 5],[3, 5],[3, 0],[0.5, 0]];
 
-                console.log("Intersection between line 1 and line 2 is at lon/lat: ", 
-                lineIntersection(p1, p2, p3, p4));
+                //console.log("Intersection between line 1 and line 2 is at lon/lat: ", 
+                //lineIntersection(p1, p2, p3, p4));
 
                 //console.log("Is p2 inside the test_polygon? ", pointInPolygon(p2, test_polygon)); //inside
                 //console.log("Is p4 inside the test_polygon? ", pointInPolygon(p4, test_polygon)); //outside
                 //console.log("Is p1 inside the test_polygon? ", pointInPolygon(p1, test_polygon)); //on border
 
-                //console.log("The outward part of the given segment is: ", splitSegment(l3, test_polygon));
-
                 //console.log(getDirection(p1, p2, p4)) // -1 right
                 //console.log(getDirection(p1, p2, p3)) // 1 left
                 //console.log(getDirection(p1, p2, p5)) // 0 on the segment
 
+                console.log(splitSegment(l4, test_polygon));
+
                 //Run
-                console.log(getSegments(route, polygon))
+                //console.log(getSegments(route, polygon));
+                
 
 
             </script>
