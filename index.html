@@ -6,70 +6,24 @@
             <script type="text/javascript" src="data/polygon.js"></script>
             <script type="text/javascript" src="data/route.js"></script>
             <script type="text/javascript" src="lib/uebung_1.js"></script>
+
+            <style>
+                table, th, td {
+                  border: 1px solid black;
+                }
+                </style>
         </head>
         <body>
             <table>
                 <tr>
-                    <th>Startpoint</th>
-                    <th>Endpoint</th>
-                    <th>Length</th>
+                    <th>Startpoint (lon/lat)</th>
+                    <th>Endpoint (lon/lat)</th>
+                    <th>Length in Meters</th>
                 </tr>
                 <tBody id="tableBody">
                 </tBody>
             </table>
             <script>
-                //Tests
-                //Data preview
-                //console.log(polygon); //uses logitute and latitute
-                //console.log(route); //uses logitute and latitute
-
-                //Extract two points
-                var pointa = route[0]
-                var pointb = route[1]
-
-                //calculate distance between the two extracted points
-                //console.log("Distance between Point a and Point b: ", distanceBetweenTwoPoints(pointa, pointb));
-
-                //Geometry test
-                var p1 = [1, 0];
-                var p2 = [1, 4];
-                var p3 = [0, 2];
-                var p4 = [4, 2];
-                var p5 = [1, 2];
-                var p6 = [2, 2.5];
-                var p7 = [5, 2.5];
-
-                var l1 = [p1, p2];
-                var l2 = [p3, p4];
-                var l3 = [p2, p4];
-                var l4 = [p6, p7];
-                var l5 = [p3, p6];
-
-                var test_polygon = [[0.5, 0],[0.5, 5],[3, 5],[3, 0],[0.5, 0]];
-
-                //console.log("Intersection between line 1 and line 2 is at lon/lat: ", 
-                //lineIntersection(p1, p2, p3, p4));
-
-                //console.log("Is p2 inside the test_polygon? ", pointInPolygon(p2, test_polygon)); //inside
-                //console.log("Is p4 inside the test_polygon? ", pointInPolygon(p4, test_polygon)); //outside
-                //console.log("Is p1 inside the test_polygon? ", pointInPolygon(p1, test_polygon)); //on border
-
-                //console.log(getDirection(p1, p2, p4)) // -1 right
-                //console.log(getDirection(p1, p2, p3)) // 1 left
-                //console.log(getDirection(p1, p2, p5)) // 0 on the segment
-
-                //console.log(splitSegment(l4, test_polygon));
-
-                //Split segment test
-                //console.log(splitSegment(l4, test_polygon));
-                //console.log(splitSegment(l5, test_polygon));
-
-                var pA = [7.60285, 51.96427];
-                var pB = [7.60492, 51.96441];
-                var lA = [pA, pB];
-                //console.log("cut segments: ", getSegments(lA, polygon));
-
-                //Run
                 var segments = getSegments(route, polygon);
                 var tableData = [];
                 for(var i = 0; i < segments.length; i++) {
@@ -78,19 +32,24 @@
                 }
                 tableData.sort((a, b) => a[2] - b[2]);
                 console.log(tableData);
-                buildTable(tableData);
 
-                function buildTable(tableData) {
-                    var table = document.getElementById("tableBody");
-                    for(var i = 0; i < tableData.length; i++) {
-                        var row =  `<tr>
-                                        <td>${tableData[i][0]}</td>
-                                        <td>${tableData[i][1]}</td>
-                                        <td>${tableData[i][2]}</td>
-                                    </tr>`
-                        table.innerHTML += row;
-                    }
+                var table = document.getElementById("tableBody");
+                for(var i = 0; i < tableData.length; i++) {
+                    var row =  `<tr>
+                        <td>${tableData[i][0]}</td>
+                        <td>${tableData[i][1]}</td>
+                        <td>${(tableData[i][2]).toFixed(2)}</td>
+                    </tr>`
+                    table.innerHTML += row;
                 }
+
+                var totalLength = 0;
+                var numberSegments = 0;
+                for(var i = 0; i < tableData.length; i++) {
+                    numberSegments += 1;
+                    totalLength += tableData[i][2];
+                }
+                console.log(numberSegments, totalLength.toFixed(2));
             </script>
         </body>
 </html> 
