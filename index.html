@@ -8,6 +8,15 @@
             <script type="text/javascript" src="lib/uebung_1.js"></script>
         </head>
         <body>
+            <table>
+                <tr>
+                    <th>Startpoint</th>
+                    <th>Endpoint</th>
+                    <th>Length</th>
+                </tr>
+                <tBody id="tableBody">
+                </tBody>
+            </table>
             <script>
                 //Tests
                 //Data preview
@@ -61,7 +70,28 @@
                 //console.log("cut segments: ", getSegments(lA, polygon));
 
                 //Run
-                console.log("cut segments: ", getSegments(route, polygon));
+                var segments = getSegments(route, polygon);
+                var tableData = [];
+                for(var i = 0; i < segments.length; i++) {
+                    var length = distanceBetweenTwoPoints(segments[i][0], segments[i][1]);
+                    tableData.push([segments[i][0], segments[i][1], length]);
+                }
+                //console.log(tableData);
+                buildTable(tableData);
+
+                function buildTable(tableData) {
+                    var table = document.getElementById("tableBody");
+
+                    for(var i = 0; i < tableData.length; i++) {
+                        var row =  `<tr>
+                                        <td>${tableData[i][0]}</td>
+                                        <td>${tableData[i][1]}</td>
+                                        <td>${tableData[i][2]}</td>
+                                    </tr>`
+                                    table.innerHTML += row
+                        table.innerHTML += row;
+                    }
+                }
             </script>
         </body>
 </html> 
