@@ -76,7 +76,7 @@
                     var length = distanceBetweenTwoPoints(segments[i][0], segments[i][1]);
                     tableData.push([segments[i][0], segments[i][1], length]);
                 }
-                //console.log(tableData);
+                console.log(tableData);
                 buildTable(tableData);
 
                 function buildTable(tableData) {
@@ -88,7 +88,6 @@
                                         <td>${tableData[i][1]}</td>
                                         <td>${tableData[i][2]}</td>
                                     </tr>`
-                                    table.innerHTML += row
                         table.innerHTML += row;
                     }
                 }
