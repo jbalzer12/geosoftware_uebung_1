@@ -76,12 +76,12 @@
                     var length = distanceBetweenTwoPoints(segments[i][0], segments[i][1]);
                     tableData.push([segments[i][0], segments[i][1], length]);
                 }
+                tableData.sort((a, b) => a[2] - b[2]);
                 console.log(tableData);
                 buildTable(tableData);
 
                 function buildTable(tableData) {
                     var table = document.getElementById("tableBody");
-
                     for(var i = 0; i < tableData.length; i++) {
                         var row =  `<tr>
                                         <td>${tableData[i][0]}</td>
