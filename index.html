@@ -54,6 +54,19 @@
                 </tBody>
             </table>
 
+            <h3>Table 4 - all paths (cut at intersection)</h3>
+            <h5 id="gesamtlaenge4"></h5>
+            <table>
+                <tr>
+                    <th>inside or outside</th>
+                    <th>Startpoint (lon/lat)</th>
+                    <th>Endpoint (lon/lat)</th>
+                    <th>Length in Meters</th>
+                </tr>
+                <tBody id="tableBody4">
+                </tBody>
+            </table>
+
             <script>
                 "use strict";
                 //Table 1
@@ -122,7 +135,6 @@
 
                 //Table 3
                 var segments = getInsideOutsidePaths(route, polygon);
-                console.log(segments);
                 var table3 = document.getElementById("tableBody3");
                 var path = [];
                 var paths = [];
@@ -144,7 +156,6 @@
                     tableData3.push(aggregatePath(paths[i]));
                 }
                 tableData3.sort((a, b) => a[3] - b[3]);
-                console.log(tableData3);
                 for(var i = 0; i < tableData3.length; i++) {
                     var row =  `<tr>
                         <td>${tableData3[i][0]}</td>
@@ -159,6 +170,45 @@
                     totalLength += segments[i][3];
                 }
                 document.getElementById('gesamtlaenge3').innerHTML = "Gesamtlänge: " +  totalLength.toFixed(2) + "m"; 
+
+
+                //Table 4
+                var segments = getSegments(route, polygon);
+                var table4 = document.getElementById("tableBody4");
+                var path = [];
+                var paths = [];
+                var tableData4 = [];
+                var lastSegment = segments[segments.length-1];
+                for(var i = 0; i < segments.length-1; i++) {
+                    if(segments[i][2] == segments[i+1][2]) {
+                        path.push(segments[i]);
+                    }
+                    if(segments[i][2] != segments[i+1][2]) {
+                        path.push(segments[i]);
+                        paths.push(path);
+                        path = [];
+                    }
+                }
+                path.push(lastSegment);
+                paths.push(path);
+                for(var i = 0; i < paths.length; i++) {
+                    tableData4.push(aggregatePath(paths[i]));
+                }
+                tableData4.sort((a, b) => a[3] - b[3]);
+                for(var i = 0; i < tableData4.length; i++) {
+                    var row =  `<tr>
+                        <td>${tableData4[i][0]}</td>
+                        <td>${tableData4[i][1]}</td>
+                        <td>${(tableData4[i][2])}</td>
+                        <td>${(tableData4[i][3]).toFixed(2)}</td>
+                    </tr>`
+                    table4.innerHTML += row;
+                }
+                var totalLength = 0;
+                for(var i = 0; i < segments.length; i++) {
+                    totalLength += segments[i][3];
+                }
+                document.getElementById('gesamtlaenge4').innerHTML = "Gesamtlänge: " +  totalLength.toFixed(2) + "m"; 
             </script>
         </body>
 </html> 
