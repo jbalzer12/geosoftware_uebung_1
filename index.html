@@ -6,7 +6,6 @@
             <script type="text/javascript" src="data/polygon.js"></script>
             <script type="text/javascript" src="data/route.js"></script>
             <script type="text/javascript" src="lib/uebung_1.js"></script>
-
             <style>
                 table, th, td {
                   border: 1px solid black;
@@ -39,99 +38,29 @@
                 <tBody id="tableBody2">
                 </tBody>
             </table>
-
             <script>
                 "use strict";
-                //Table 3
-                var segments1 = getInsideOutsidePaths(route, polygon);
-                var table1 = document.getElementById("tableBody1");
-                var path1 = [];
-                var paths1 = [];
-                var tableData1 = [];
-                var lastSegment1 = segments1[segments1.length-1];
-
-                for(var i = 0; i < segments1.length-1; i++) {
-                    if(segments1[i][2] == segments1[i+1][2]) {
-                        path1.push(segments1[i]);
-                    }
-                    if(segments1[i][2] != segments1[i+1][2]) {
-                        path1.push(segments1[i]);
-                        paths1.push(path1);
-                        path1 = [];
-                    }
-                }
-                path1.push(lastSegment1);
-                paths1.push(path1);
-
-                //aggregate paths
-                for(var i = 0; i < paths1.length; i++) {
-                    tableData1.push(aggregatePath(paths1[i]));
-                }
+                //Table 1
+                var segments1 = getInsideOutsidePaths(route, polygon); //segement selection for the first table
+                var table1 = document.getElementById("tableBody1"); //define table 1 as variable by its id
+                var paths1 = getPaths(segments1); //define an empyt array for the aggregated paths
 
                 //fill the table with the paths
-                tableData1.sort((a, b) => a[3] - b[3]);
-                for(var i = 0; i < tableData1.length; i++) {
-                    var row =  `<tr>
-                        <td>${tableData1[i][0]}</td>
-                        <td>${tableData1[i][1]}</td>
-                        <td>${(tableData1[i][2])}</td>
-                        <td>${(tableData1[i][3]).toFixed(2)}</td>
-                    </tr>`
-                    table1.innerHTML += row;
-                }
+                createPathTable(table1, paths1);
 
                 //Calculating the overall length
-                var totalLength1 = 0;
-                for(var i = 0; i < segments1.length; i++) {
-                    totalLength1 += segments1[i][3];
-                }
-                document.getElementById('gesamtlaenge1').innerHTML = "Gesamtlänge: " +  totalLength1.toFixed(2) + "m"; 
+                document.getElementById('gesamtlaenge1').innerHTML = "Gesamtlänge: " +  calculateLengthOfPaths(segments1).toFixed(2) + "m"; 
 
-
-                //Table 4
+                //Table 2
                 var segments2 = getSegments(route, polygon);
                 var table2 = document.getElementById("tableBody2");
-                var path2 = [];
-                var paths2 = [];
-                var tableData2 = [];
-                var lastSegment2 = segments2[segments2.length-1];
-
-                for(var i = 0; i < segments2.length-1; i++) {
-                    if(segments2[i][2] == segments2[i+1][2]) {
-                        path2.push(segments2[i]);
-                    }
-                    if(segments2[i][2] != segments2[i+1][2]) {
-                        path2.push(segments2[i]);
-                        paths2.push(path2);
-                        path2 = [];
-                    }
-                }
-                path2.push(lastSegment2);
-                paths2.push(path2);
-
-                //aggregate paths
-                for(var i = 0; i < paths2.length; i++) {
-                    tableData2.push(aggregatePath(paths2[i]));
-                }
+                var paths2 = getPaths(segments2); //define an empyt array for the aggregated paths;
 
                 //fill the table with the paths
-                tableData2.sort((a, b) => a[3] - b[3]);
-                for(var i = 0; i < tableData2.length; i++) {
-                    var row =  `<tr>
-                        <td>${tableData2[i][0]}</td>
-                        <td>${tableData2[i][1]}</td>
-                        <td>${(tableData2[i][2])}</td>
-                        <td>${(tableData2[i][3]).toFixed(2)}</td>
-                    </tr>`
-                    table2.innerHTML += row;
-                }
+                createPathTable(table2, paths2);
 
                 //Calculating the overall length
-                var totalLength2 = 0;
-                for(var i = 0; i < segments2.length; i++) {
-                    totalLength2 += segments2[i][3];
-                }
-                document.getElementById('gesamtlaenge2').innerHTML = "Gesamtlänge: " +  totalLength2.toFixed(2) + "m"; 
+                document.getElementById('gesamtlaenge2').innerHTML = "Gesamtlänge: " +  calculateLengthOfPaths(segments2).toFixed(2) + "m"; 
             </script>
         </body>
 </html> 
