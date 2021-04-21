@@ -14,11 +14,11 @@
             </style>
         </head>
         <body>
-            <h3>Table 1 - all outward segments (cut at intersection with polygon)</h3>
+            <h3>Table 1 - all paths (not cut at intersection)</h3>
             <h5 id="gesamtlaenge1"></h5>
-            <h5 id="anzahl1"></h5>
             <table>
                 <tr>
+                    <th>inside or outside</th>
                     <th>Startpoint (lon/lat)</th>
                     <th>Endpoint (lon/lat)</th>
                     <th>Length in Meters</th>
@@ -27,188 +27,111 @@
                 </tBody>
             </table>
 
-            <h3>Table 2 - all segments (not cut at intersection)</h3>
-            <h5 id="inside"></h5>
-            <h5 id="outside"></h5>
+            <h3>Table 2 - all paths (cut at intersection)</h3>
+            <h5 id="gesamtlaenge2"></h5>
             <table>
                 <tr>
+                    <th>inside or outside</th>
                     <th>Startpoint (lon/lat)</th>
                     <th>Endpoint (lon/lat)</th>
                     <th>Length in Meters</th>
-                    <th>inside or outside</th>
                 </tr>
                 <tBody id="tableBody2">
                 </tBody>
             </table>
 
-            <h3>Table 3 - all paths (not cut at intersection)</h3>
-            <h5 id="gesamtlaenge3"></h5>
-            <table>
-                <tr>
-                    <th>inside or outside</th>
-                    <th>Startpoint (lon/lat)</th>
-                    <th>Endpoint (lon/lat)</th>
-                    <th>Length in Meters</th>
-                </tr>
-                <tBody id="tableBody3">
-                </tBody>
-            </table>
-
-            <h3>Table 4 - all paths (cut at intersection)</h3>
-            <h5 id="gesamtlaenge4"></h5>
-            <table>
-                <tr>
-                    <th>inside or outside</th>
-                    <th>Startpoint (lon/lat)</th>
-                    <th>Endpoint (lon/lat)</th>
-                    <th>Length in Meters</th>
-                </tr>
-                <tBody id="tableBody4">
-                </tBody>
-            </table>
-
             <script>
                 "use strict";
-                //Table 1
-                var segments = getOutsideSegments(route, polygon);
-                var tableData1 = [];
-                for(var i = 0; i < segments.length; i++) {
-                    var length = distanceBetweenTwoPoints(segments[i][0], segments[i][1]);
-                    tableData1.push([segments[i][0], segments[i][1], length]);
-                }
-                tableData1.sort((a, b) => a[2] - b[2]);
-
+                //Table 3
+                var segments1 = getInsideOutsidePaths(route, polygon);
                 var table1 = document.getElementById("tableBody1");
+                var path1 = [];
+                var paths1 = [];
+                var tableData1 = [];
+                var lastSegment1 = segments1[segments1.length-1];
+
+                for(var i = 0; i < segments1.length-1; i++) {
+                    if(segments1[i][2] == segments1[i+1][2]) {
+                        path1.push(segments1[i]);
+                    }
+                    if(segments1[i][2] != segments1[i+1][2]) {
+                        path1.push(segments1[i]);
+                        paths1.push(path1);
+                        path1 = [];
+                    }
+                }
+                path1.push(lastSegment1);
+                paths1.push(path1);
+
+                //aggregate paths
+                for(var i = 0; i < paths1.length; i++) {
+                    tableData1.push(aggregatePath(paths1[i]));
+                }
+
+                //fill the table with the paths
+                tableData1.sort((a, b) => a[3] - b[3]);
                 for(var i = 0; i < tableData1.length; i++) {
                     var row =  `<tr>
                         <td>${tableData1[i][0]}</td>
                         <td>${tableData1[i][1]}</td>
-                        <td>${(tableData1[i][2]).toFixed(2)}</td>
+                        <td>${(tableData1[i][2])}</td>
+                        <td>${(tableData1[i][3]).toFixed(2)}</td>
                     </tr>`
                     table1.innerHTML += row;
                 }
 
-                var totalLengthOutside = 0;
-                var numberSegments1 = 0;
-                for(var i = 0; i < tableData1.length; i++) {
-                    numberSegments1 += 1;
-                    totalLengthOutside += tableData1[i][2];
+                //Calculating the overall length
+                var totalLength1 = 0;
+                for(var i = 0; i < segments1.length; i++) {
+                    totalLength1 += segments1[i][3];
                 }
-                document.getElementById('gesamtlaenge1').innerHTML = "Gesamtlänge: " +  totalLengthOutside.toFixed(2) + "m"; 
-                document.getElementById('anzahl1').innerHTML = "Anzahl der Segmente: " +  numberSegments1; 
+                document.getElementById('gesamtlaenge1').innerHTML = "Gesamtlänge: " +  totalLength1.toFixed(2) + "m"; 
 
-                //Table 2
-                var segments = getInsideOutsidePaths(route, polygon);
-                var tableData2 = [];
-                for(var i = 0; i < segments.length; i++) {
-                    var length = distanceBetweenTwoPoints(segments[i][0], segments[i][1]);
-                    tableData2.push([segments[i][0], segments[i][1], segments[i][2], segments[i][3]]);
-                }
-                tableData2.sort((a, b) => a[3] - b[3]);
 
+                //Table 4
+                var segments2 = getSegments(route, polygon);
                 var table2 = document.getElementById("tableBody2");
+                var path2 = [];
+                var paths2 = [];
+                var tableData2 = [];
+                var lastSegment2 = segments2[segments2.length-1];
+
+                for(var i = 0; i < segments2.length-1; i++) {
+                    if(segments2[i][2] == segments2[i+1][2]) {
+                        path2.push(segments2[i]);
+                    }
+                    if(segments2[i][2] != segments2[i+1][2]) {
+                        path2.push(segments2[i]);
+                        paths2.push(path2);
+                        path2 = [];
+                    }
+                }
+                path2.push(lastSegment2);
+                paths2.push(path2);
+
+                //aggregate paths
+                for(var i = 0; i < paths2.length; i++) {
+                    tableData2.push(aggregatePath(paths2[i]));
+                }
+
+                //fill the table with the paths
+                tableData2.sort((a, b) => a[3] - b[3]);
                 for(var i = 0; i < tableData2.length; i++) {
                     var row =  `<tr>
                         <td>${tableData2[i][0]}</td>
                         <td>${tableData2[i][1]}</td>
-                        <td>${(tableData2[i][3]).toFixed(2)}</td>
                         <td>${(tableData2[i][2])}</td>
+                        <td>${(tableData2[i][3]).toFixed(2)}</td>
                     </tr>`
                     table2.innerHTML += row;
                 }
-                var totalLengthOutside = 0;
-                var totalLengthInside = 0;
-                var numberSegmentsOutside = 0;
-                var numberSegmentsInside = 0;
-                for(var i = 0; i < tableData2.length; i++) {
-                    if(tableData2[i][2] == "outside") {
-                        numberSegmentsOutside += 1;
-                        totalLengthOutside += tableData2[i][3];
-                    }
-                    if(tableData2[i][2] == "inside") {
-                        numberSegmentsInside += 1;
-                        totalLengthInside += tableData2[i][3];
-                    }
-                }
-                document.getElementById('inside').innerHTML = "Gesamtlänge der innen liegenden Segmente: " +  totalLengthInside.toFixed(2) + "m" + " in " + numberSegmentsInside + " Segmenten"; 
-                document.getElementById('outside').innerHTML = "Gesamtlänge der außen liegenden Segmente: " +  totalLengthOutside.toFixed(2) + "m" + " in " + numberSegmentsOutside + " Segmenten";
 
-                //Table 3
-                var segments = getInsideOutsidePaths(route, polygon);
-                var table3 = document.getElementById("tableBody3");
-                var path = [];
-                var paths = [];
-                var tableData3 = [];
-                var lastSegment = segments[segments.length-1];
-                for(var i = 0; i < segments.length-1; i++) {
-                    if(segments[i][2] == segments[i+1][2]) {
-                        path.push(segments[i]);
-                    }
-                    if(segments[i][2] != segments[i+1][2]) {
-                        path.push(segments[i]);
-                        paths.push(path);
-                        path = [];
-                    }
+                //Calculating the overall length
+                var totalLength2 = 0;
+                for(var i = 0; i < segments2.length; i++) {
+                    totalLength2 += segments2[i][3];
                 }
-                path.push(lastSegment);
-                paths.push(path);
-                for(var i = 0; i < paths.length; i++) {
-                    tableData3.push(aggregatePath(paths[i]));
-                }
-                tableData3.sort((a, b) => a[3] - b[3]);
-                for(var i = 0; i < tableData3.length; i++) {
-                    var row =  `<tr>
-                        <td>${tableData3[i][0]}</td>
-                        <td>${tableData3[i][1]}</td>
-                        <td>${(tableData3[i][2])}</td>
-                        <td>${(tableData3[i][3]).toFixed(2)}</td>
-                    </tr>`
-                    table3.innerHTML += row;
-                }
-                var totalLength = 0;
-                for(var i = 0; i < segments.length; i++) {
-                    totalLength += segments[i][3];
-                }
-                document.getElementById('gesamtlaenge3').innerHTML = "Gesamtlänge: " +  totalLength.toFixed(2) + "m"; 
-
-
-                //Table 4
-                var segments = getSegments(route, polygon);
-                var table4 = document.getElementById("tableBody4");
-                var path = [];
-                var paths = [];
-                var tableData4 = [];
-                var lastSegment = segments[segments.length-1];
-                for(var i = 0; i < segments.length-1; i++) {
-                    if(segments[i][2] == segments[i+1][2]) {
-                        path.push(segments[i]);
-                    }
-                    if(segments[i][2] != segments[i+1][2]) {
-                        path.push(segments[i]);
-                        paths.push(path);
-                        path = [];
-                    }
-                }
-                path.push(lastSegment);
-                paths.push(path);
-                for(var i = 0; i < paths.length; i++) {
-                    tableData4.push(aggregatePath(paths[i]));
-                }
-                tableData4.sort((a, b) => a[3] - b[3]);
-                for(var i = 0; i < tableData4.length; i++) {
-                    var row =  `<tr>
-                        <td>${tableData4[i][0]}</td>
-                        <td>${tableData4[i][1]}</td>
-                        <td>${(tableData4[i][2])}</td>
-                        <td>${(tableData4[i][3]).toFixed(2)}</td>
-                    </tr>`
-                    table4.innerHTML += row;
-                }
-                var totalLength = 0;
-                for(var i = 0; i < segments.length; i++) {
-                    totalLength += segments[i][3];
-                }
-                document.getElementById('gesamtlaenge4').innerHTML = "Gesamtlänge: " +  totalLength.toFixed(2) + "m"; 
+                document.getElementById('gesamtlaenge2').innerHTML = "Gesamtlänge: " +  totalLength2.toFixed(2) + "m"; 
             </script>
         </body>
 </html> 
