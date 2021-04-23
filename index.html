@@ -3,9 +3,9 @@
         <head>
             <meta charset="UTF-8">
             <title>Geosoftware I - Uebung 1</title>
-            <script type="text/javascript" src="data/polygon.js"></script> //polygon
-            <script type="text/javascript" src="data/route.js"></script> //route
-            <script type="text/javascript" src="lib/uebung_1.js"></script> //functions
+            <script type="text/javascript" src="data/polygon.js"></script> 
+            <script type="text/javascript" src="data/route.js"></script> 
+            <script type="text/javascript" src="lib/uebung_1.js"></script> 
             <style>
                 table, th, td {
                   border: 1px solid black; 
@@ -41,7 +41,7 @@
             <script>
                 "use strict"; //javaScript mode
                 //Table 1
-                var segments1 = getInsideOutsidePaths(route, polygon); //segement selection for the first table
+                var segments1 = getInsideOutsideSegments(route, polygon); //segement selection for the first table
                 var table1 = document.getElementById("tableBody1"); //define table 1 as variable by its id
                 var paths1 = getPaths(segments1); //define an empyt array for the aggregated paths
 
