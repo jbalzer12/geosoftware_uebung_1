@@ -13,6 +13,10 @@
             </style>
         </head>
         <body>
+            <textarea id="textField" rows="4" cols="50"></textarea>
+                <button type="button" onclick="getInput();">Submit</button>
+            </form>
+
             <h3>Table 1 - all paths (not cut at intersection)</h3>
             <h5 id="gesamtlaenge1"></h5>
             <table>
@@ -40,6 +44,19 @@
             </table>
             <script>
                 "use strict"; //javaScript mode
+                
+                var inputLinestring;
+                var inputGeoJson;
+
+                function getInput(){
+                    // Selecting the input element and get its value 
+                    var inputLinestring = document.getElementById("textField").value;
+                    // Displaying the value
+                    console.log(inputLinestring);
+                    inputGeoJson = JSON.parse(inputLinestring);
+                    console.log(inputGeoJson);
+                }
+    
                 //Table 1
                 var segments1 = getInsideOutsideSegments(route, polygon); //segement selection for the first table
                 var table1 = document.getElementById("tableBody1"); //define table 1 as variable by its id
