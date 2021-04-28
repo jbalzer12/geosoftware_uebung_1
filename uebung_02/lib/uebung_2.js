@@ -257,11 +257,11 @@ function getPaths(segments) {
     var path = []; //define an empty array for the individual paths which have to be build first by aggregating the corresponing segments
     var paths = []; //define an empyt array for the aggregated paths
     var tableData = []; //define an empty array for the data for the rows of the table
-    var lastSegment = segments1[segments1.length-1]; //get the last segment of the last path 
+    var lastSegment = segments[segments.length-1]; //get the last segment of the last path 
                                                      //(there is an "one-of" error somewhre but i 
                                                      //was unable to find it so it is corrected this way)
 
-    for(var i = 0; i < segments1.length-1; i++) { //iterate over all segments
+    for(var i = 0; i < segments.length-1; i++) { //iterate over all segments
             if(segments[i][2] == segments[i+1][2]) { //if the segments correspond to the same path
                 path.push(segments[i]); //push the segment i into the path array
             }
@@ -312,4 +312,26 @@ function createPathTable(table, paths) {
         </tr>`
         table.innerHTML += row; //pass row to given table
     }
+}
+
+function arrayToGeoJson(array) {
+    var geoJson;
+    if(array[0][0] == array[array.length-1][0] && array[0][1] == array[array.length-1][1]) {
+        var polygonString = '{' + '"type": "Polygon",' + '"coordinates": [[' + arrayToString(array) + ']]}';
+        geoJson = JSON.parse(polygonString);
+    }
+    else {
+        var lineString = '{' + '"type": "LineString",' + '"coordinates": [' + arrayToString(array) + ']}';
+        geoJson = JSON.parse(lineString);     
+    }
+    return geoJson;
+}
+
+function arrayToString(array) {
+    var string = '[' + array[0] + '],';
+    for (var i = 1; i < array.length-1; i++) {
+        string = string + '[' + array[i] + '],'
+    }
+    string = string + '[' + array[array.length-1] + ']'
+    return string;
 }

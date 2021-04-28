@@ -5,7 +5,7 @@
             <title>Geosoftware I - Uebung 1</title>
             <script type="text/javascript" src="data/polygon.js"></script> 
             <script type="text/javascript" src="data/route.js"></script> 
-            <script type="text/javascript" src="lib/uebung_1.js"></script> 
+            <script type="text/javascript" src="lib/uebung_2.js"></script> 
             <style>
                 table, th, td {
                   border: 1px solid black; 
@@ -13,11 +13,17 @@
             </style>
         </head>
         <body>
+            <a>Passende Linien können hier erzeugt werden</a>
+            <a href="https://geojson.io">geojson.io</a>
+            <p>Linien müssen die Annahme erfüllen das Segmente des Linienzuges dürfen das Polygon höchtens einmal schneiden!</p>
+            <p>Eingaben müssen einzelne Objekte sein. Feature Collections sind nicht zulässig!</p>
+
             <textarea id="textField" rows="4" cols="50"></textarea>
                 <button type="button" onclick="getInput();">Submit</button>
             </form>
+            <button type= "button" onclick="fillTables(route,polygon)">Run</button>
 
-            <h3>Table 1 - all paths (not cut at intersection)</h3>
+            <h3>Table 1 - all paths (cut at intersection)</h3>
             <h5 id="gesamtlaenge1"></h5>
             <table>
                 <tr>
@@ -29,19 +35,11 @@
                 <tBody id="tableBody1">
                 </tBody>
             </table>
+            <h3>Polygon GeoJson</h3>
+            <p id="polygonfield"></p>
+            <h3>Route GeoJson</h3>
+            <p id="routefield"></p>
 
-            <h3>Table 2 - all paths (cut at intersection)</h3>
-            <h5 id="gesamtlaenge2"></h5>
-            <table>
-                <tr>
-                    <th>inside or outside</th>
-                    <th>Startpoint (lon/lat)</th>
-                    <th>Endpoint (lon/lat)</th>
-                    <th>Length in Meters</th>
-                </tr>
-                <tBody id="tableBody2">
-                </tBody>
-            </table>
             <script>
                 "use strict"; //javaScript mode
                 
@@ -49,35 +47,27 @@
                 var inputGeoJson;
 
                 function getInput(){
-                    // Selecting the input element and get its value 
                     var inputLinestring = document.getElementById("textField").value;
-                    // Displaying the value
-                    console.log(inputLinestring);
                     inputGeoJson = JSON.parse(inputLinestring);
-                    console.log(inputGeoJson);
+                    route = inputGeoJson.coordinates;
                 }
-    
-                //Table 1
-                var segments1 = getInsideOutsideSegments(route, polygon); //segement selection for the first table
-                var table1 = document.getElementById("tableBody1"); //define table 1 as variable by its id
-                var paths1 = getPaths(segments1); //define an empyt array for the aggregated paths
+                
+                function fillTables(route, polygon) { 
+                    //Table 1
+                    var segments1 = getSegments(route, polygon); //segement selection for the second table
+                    var table1 = document.getElementById("tableBody1"); //define table 1 as variable by its id
+                    var paths1 = getPaths(segments1); //define an empyt array for the aggregated paths;
 
-                //fill the table with the paths
-                createPathTable(table1, paths1); //create data fitting for the table and fill it
+                    //fill the table with the paths
+                    createPathTable(table1, paths1); //create data fitting for the table and fill it
 
-                //Calculating the overall length
-                document.getElementById('gesamtlaenge1').innerHTML = "Gesamtlänge: " +  calculateLengthOfPaths(segments1).toFixed(2) + "m"; 
-
-                //Table 2
-                var segments2 = getSegments(route, polygon); //segement selection for the second table
-                var table2 = document.getElementById("tableBody2"); //define table 2 as variable by its id
-                var paths2 = getPaths(segments2); //define an empyt array for the aggregated paths;
-
-                //fill the table with the paths
-                createPathTable(table2, paths2); //create data fitting for the table and fill it
-
-                //Calculating the overall length
-                document.getElementById('gesamtlaenge2').innerHTML = "Gesamtlänge: " +  calculateLengthOfPaths(segments2).toFixed(2) + "m"; 
+                    //Calculating the overall length
+                    document.getElementById('gesamtlaenge1').innerHTML = "Gesamtlänge: " +  calculateLengthOfPaths(segments1).toFixed(2) + "m";
+                    
+                    console.log(arrayToGeoJson(polygon));
+                    document.getElementById("polygonfield").innerHTML = JSON.stringify(arrayToGeoJson(polygon));
+                    document.getElementById("routefield").innerHTML = JSON.stringify(arrayToGeoJson(route));
+                }
             </script>
         </body>
 </html> 
