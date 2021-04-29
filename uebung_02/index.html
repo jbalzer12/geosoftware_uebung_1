@@ -15,8 +15,14 @@
         <body>
             <a>Passende Linien können hier erzeugt werden</a>
             <a href="https://geojson.io">geojson.io</a>
-            <p>Linien müssen die Annahme erfüllen das Segmente des Linienzuges dürfen das Polygon höchtens einmal schneiden!</p>
-            <p>Eingaben müssen einzelne Objekte sein. Feature Collections sind nicht zulässig!</p>
+            <p>
+                <a>Linien müssen die Annahme erfüllen das Segmente des Linienzuges dürfen das Polygon höchtens einmal schneiden!</a>
+                <br></br>
+                <a>Eingaben müssen einzelne Objekte sein. Feature Collections sind nicht zulässig!</a>
+                <br></br>
+                <a>Linienzüge mit identischem Start- und Endpunkt werden als Polygone interpretiert!</a>
+            </p>
+           
 
             <textarea id="textField" rows="4" cols="50"></textarea>
                 <button type="button" onclick="getInput();">Submit</button>
