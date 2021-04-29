@@ -13,6 +13,7 @@
             </style>
         </head>
         <body>
+            <!--Informationen für User-->
             <a>Passende Linien können hier erzeugt werden</a>
             <a href="https://geojson.io">geojson.io</a>
             <p>
@@ -23,10 +24,12 @@
                 <a>Linienzüge mit identischem Start- und Endpunkt werden als Polygone interpretiert!</a>
             </p>
            
-
+            <!--Textarea für die Eingabe der Route-->
             <textarea id="textField" rows="4" cols="50"></textarea>
+                <!--Knopf zum abschicken der Eingabe-Route-->
                 <button type="button" onclick="getInput();">Submit</button>
             </form>
+            <!--Füllen der Tabellen mit Eingabe- oder Default-Route-->
             <button type= "button" onclick="fillTables(route,polygon)">Run</button>
 
             <h3>Table 1 - all paths (cut at intersection)</h3>
@@ -41,6 +44,7 @@
                 <tBody id="tableBody1">
                 </tBody>
             </table>
+            <!--Paragraphen für die konvertierten GeoJson-->
             <h3>Polygon GeoJson</h3>
             <p id="polygonfield"></p>
             <h3>Route GeoJson</h3>
