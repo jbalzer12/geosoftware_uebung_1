@@ -314,19 +314,36 @@ function createPathTable(table, paths) {
     }
 }
 
+/**
+* @function 
+* @param {Array} array - the input needs to be an array which represents a line or an polygon
+* @return {} - returns the input as an GeoJson
+*/
 function arrayToGeoJson(array) {
-    var geoJson;
+    var geoJson; //variable for storing the result
+    //if last first and last entry of the array are equal it is assumed the input is an polygon (later version may include an option that must be set beforehand)
     if(array[0][0] == array[array.length-1][0] && array[0][1] == array[array.length-1][1]) {
+        //create an String formatted as an GeoJson polygon by concatenation
         var polygonString = '{' + '"type": "Polygon",' + '"coordinates": [[' + arrayToString(array) + ']]}';
+        //parsing the String
         geoJson = JSON.parse(polygonString);
     }
+    //other inpits are interpreted as lines
     else {
+        //create an String formatted as an GeoJson polygon by concatenation
         var lineString = '{' + '"type": "LineString",' + '"coordinates": [' + arrayToString(array) + ']}';
+        //parsing the String
         geoJson = JSON.parse(lineString);     
     }
+    //Output
     return geoJson;
 }
 
+/**
+* @function 
+* @param {Array} array
+* @return {String} - outputs the array as an correctly formatted String
+*/
 function arrayToString(array) {
     var string = '[' + array[0] + '],';
     for (var i = 1; i < array.length-1; i++) {

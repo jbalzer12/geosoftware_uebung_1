@@ -53,15 +53,18 @@
             <script>
                 "use strict"; //javaScript mode
                 
-                var inputLinestring;
-                var inputGeoJson;
+                
+                var inputLinestring; //Varibale for storing the input String
+                var inputGeoJson; //Variable for storing the converted input String
 
+                //Function for converting the input into a GeoJson
                 function getInput(){
                     var inputLinestring = document.getElementById("textField").value;
                     inputGeoJson = JSON.parse(inputLinestring);
                     route = inputGeoJson.coordinates;
                 }
                 
+                //Function for filling the tables with calculated information
                 function fillTables(route, polygon) { 
                     //Table 1
                     var segments1 = getSegments(route, polygon); //segement selection for the second table
@@ -74,7 +77,7 @@
                     //Calculating the overall length
                     document.getElementById('gesamtlaenge1').innerHTML = "Gesamtlänge: " +  calculateLengthOfPaths(segments1).toFixed(2) + "m";
                     
-                    console.log(arrayToGeoJson(polygon));
+                    //output the "GeoJsons" of the path and the polygon
                     document.getElementById("polygonfield").innerHTML = JSON.stringify(arrayToGeoJson(polygon));
                     document.getElementById("routefield").innerHTML = JSON.stringify(arrayToGeoJson(route));
                 }
