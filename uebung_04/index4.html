@@ -24,34 +24,44 @@
         <body>
             <div id="mapdiv"></div>
             <script>
-                var map = L.map('mapdiv');
+                var map = L.map('mapdiv'); //Map Object
 
+                //Basemap Layer
                 var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 					attribution: '&copy; <a href = "http://osm.org/copyright">OpenStreetMap</a> contributors'
 				}).addTo(map); 
 
-                var routeLayer = L.geoJSON().addTo(map);
-                routeLayer.addData(route);
+                //Route layer
+                var routeLayer = L.geoJSON(route).addTo(map);
+                //Fit Bounds to the Route
                 map.fitBounds(routeLayer.getBounds());
 
+                //Feature Group Layer for the Input Feature from leaflet.draw
                 var featureGroup = L.featureGroup().addTo(map);
 
-				var overlayMaps = {
+                //Layer Control
+                //Overlays
+				var overlayMaps = { 
 					"Route": routeLayer
 				}; 
+                //Basemaps
 				var baseMaps = {
 					"OSM": osm
 				}; 
 				L.control.layers(baseMaps, overlayMaps).addTo(map);
 
+                //Draw Control
                 var drawControl = new L.Control.Draw({
                     edit: {
                         featureGroup: featureGroup
                     }
                 }).addTo(map);
 
+                var inputRectangle;
                 map.on('draw:created', function(e) {
                     featureGroup.addLayer(e.layer);
+                    var inputRectangle = e.layer._latlngs[0];
+                    console.log(inputRectangle);
                 });
             </script>
         </body>

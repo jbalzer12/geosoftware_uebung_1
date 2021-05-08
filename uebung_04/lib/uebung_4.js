@@ -352,3 +352,13 @@ function arrayToString(array) {
     string = string + '[' + array[array.length-1] + ']'
     return string;
 }
+
+/**
+* @function 
+* @param {Array} array 
+* @return {String} - outputs a JSON Rectangle 
+*/
+function arrayToPolygon(array) {
+    array = array.push(array[0]);
+    return array;
+}
