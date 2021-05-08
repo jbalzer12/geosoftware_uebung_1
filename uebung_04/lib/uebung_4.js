@@ -362,3 +362,20 @@ function arrayToPolygon(array) {
     array = array.push(array[0]);
     return array;
 }
+
+/**
+ * @function
+ * @param
+ * @return
+ */
+function getAllIntersections(route, polygon) {
+    var intersections = [];
+    for(i = 0; i < route.length-1; i++) {
+        for(j = 0; j < polygon.length-1; j++) {
+            if(hasIntersection(route[i], route[i+1], polygon[j], polygon[j+1])) {
+                intersections.push(lineIntersection(route[i], route[i+1], polygon[j], polygon[j+1]));
+            }
+        }
+    }
+    return intersections;
+}
