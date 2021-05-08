@@ -13,6 +13,10 @@
             <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
             crossorigin=""></script>
+
+            <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.css' rel='stylesheet' />
+            <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.js'></script>
+
             <style type="text/css">
                 #mapdiv {height : 400px; width : 400px}
             </style>
@@ -30,6 +34,8 @@
                 routeLayer.addData(route);
                 map.fitBounds(routeLayer.getBounds());
 
+                var featureGroup = L.featureGroup().addTo(map);
+
 				var overlayMaps = {
 					"Route": routeLayer
 				}; 
@@ -37,6 +43,16 @@
 					"OSM": osm
 				}; 
 				L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+                var drawControl = new L.Control.Draw({
+                    edit: {
+                        featureGroup: featureGroup
+                    }
+                }).addTo(map);
+
+                map.on('draw:created', function(e) {
+                    featureGroup.addLayer(e.layer);
+                });
             </script>
         </body>
 </html> 
