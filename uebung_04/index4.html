@@ -2,85 +2,41 @@
     <html>
         <head>
             <meta charset="UTF-8">
-            <title>Geosoftware I - Uebung 1</title>
-            <script type="text/javascript" src="data/polygon.js"></script> 
-            <script type="text/javascript" src="data/route.js"></script> 
-            <script type="text/javascript" src="lib/uebung_2.js"></script> 
-            <style>
-                table, th, td {
-                  border: 1px solid black; 
-                }
+            <title>Geosoftware I - Uebung 4</title>
+            <script type="text/javascript" src="data/route.geojson"></script> 
+            <script type="text/javascript" src="lib/uebung_4.js"></script> 
+            <script type="text/javascript" src="lib/jQuerry_3_6_0.js"></script> 
+
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+            crossorigin=""/>
+            <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+            <style type="text/css">
+                #mapdiv {height : 400px; width : 400px}
             </style>
         </head>
         <body>
-            <!--Informationen für User-->
-            <a>Passende Linien können hier erzeugt werden</a>
-            <a href="https://geojson.io">geojson.io</a>
-            <p>
-                <a>Linien müssen die Annahme erfüllen das Segmente des Linienzuges dürfen das Polygon höchtens einmal schneiden!</a>
-                <br></br>
-                <a>Eingaben müssen einzelne Objekte sein. Feature Collections sind nicht zulässig!</a>
-                <br></br>
-                <a>Linienzüge mit identischem Start- und Endpunkt werden als Polygone interpretiert!</a>
-            </p>
-           
-            <!--Textarea für die Eingabe der Route-->
-            <textarea id="textField" rows="4" cols="50"></textarea>
-                <!--Knopf zum abschicken der Eingabe-Route-->
-                <button type="button" onclick="getInput();">Submit</button>
-            </form>
-            <!--Füllen der Tabellen mit Eingabe- oder Default-Route-->
-            <button type= "button" onclick="fillTables(route,polygon)">Run</button>
-
-            <h3>Table 1 - all paths (cut at intersection)</h3>
-            <h5 id="gesamtlaenge1"></h5>
-            <table>
-                <tr>
-                    <th>inside or outside</th>
-                    <th>Startpoint (lon/lat)</th>
-                    <th>Endpoint (lon/lat)</th>
-                    <th>Length in Meters</th>
-                </tr>
-                <tBody id="tableBody1">
-                </tBody>
-            </table>
-            <!--Paragraphen für die konvertierten GeoJson-->
-            <h3>Polygon GeoJson</h3>
-            <p id="polygonfield"></p>
-            <h3>Route GeoJson</h3>
-            <p id="routefield"></p>
-
+            <div id="mapdiv"></div>
             <script>
-                "use strict"; //javaScript mode
-                
-                
-                var inputLinestring; //Varibale for storing the input String
-                var inputGeoJson; //Variable for storing the converted input String
+                var map = L.map('mapdiv');
 
-                //Function for converting the input into a GeoJson
-                function getInput(){
-                    var inputLinestring = document.getElementById("textField").value;
-                    inputGeoJson = JSON.parse(inputLinestring);
-                    route = inputGeoJson.coordinates;
-                }
-                
-                //Function for filling the tables with calculated information
-                function fillTables(route, polygon) { 
-                    //Table 1
-                    var segments1 = getSegments(route, polygon); //segement selection for the second table
-                    var table1 = document.getElementById("tableBody1"); //define table 1 as variable by its id
-                    var paths1 = getPaths(segments1); //define an empyt array for the aggregated paths;
+                var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+					attribution: '&copy; <a href = "http://osm.org/copyright">OpenStreetMap</a> contributors'
+				}).addTo(map); 
 
-                    //fill the table with the paths
-                    createPathTable(table1, paths1); //create data fitting for the table and fill it
+                var routeLayer = L.geoJSON().addTo(map);
+                routeLayer.addData(route);
+                map.fitBounds(routeLayer.getBounds());
 
-                    //Calculating the overall length
-                    document.getElementById('gesamtlaenge1').innerHTML = "Gesamtlänge: " +  calculateLengthOfPaths(segments1).toFixed(2) + "m";
-                    
-                    //output the "GeoJsons" of the path and the polygon
-                    document.getElementById("polygonfield").innerHTML = JSON.stringify(arrayToGeoJson(polygon));
-                    document.getElementById("routefield").innerHTML = JSON.stringify(arrayToGeoJson(route));
-                }
+				var overlayMaps = {
+					"Route": routeLayer
+				}; 
+				var baseMaps = {
+					"OSM": osm
+				}; 
+				L.control.layers(baseMaps, overlayMaps).addTo(map);
             </script>
         </body>
 </html> 
