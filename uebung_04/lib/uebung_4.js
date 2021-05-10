@@ -168,3 +168,22 @@ function getAllIntersections(route, polygon) {
     return swappedPolygon;
 }
 
+/**
+ * @function
+ * @param
+ * @return
+ */
+function arrayToPoint(point) {
+    var pointGeoJson = '{' + '"type": "Feature",' + '"properties": {},' + '"geometry": {' + '"type": "Point", "coordinates": [' + point[0] + ',' + point[1] + ']}}';
+    return JSON.parse(pointGeoJson);
+}
+
+/**
+ * @function
+ * @param
+ * @return
+ */
+function intersectionToMap(intersections) {
+
+}
+

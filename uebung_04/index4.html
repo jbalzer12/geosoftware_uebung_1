@@ -3,21 +3,22 @@
         <head>
             <meta charset="UTF-8">
             <title>Geosoftware I - Uebung 4</title>
+            <!--Route-->
             <script type="text/javascript" src="data/route.geojson"></script> 
+            <!--Functions-->
             <script type="text/javascript" src="lib/uebung_4.js"></script> 
+            <!--Style-->
             <script type="text/javascript" src="lib/jQuerry_3_6_0.js"></script> 
-
+            <!--Leaflet-->
             <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
             integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
             crossorigin=""/>
             <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
             crossorigin=""></script>
-
+            <!--Leaflet Draw-->
             <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.css' rel='stylesheet' />
             <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.js'></script>
-
-            <script src='https://unpkg.com/@turf/turf@6.3.0/turf.min.js'></script>
 
             <style type="text/css">
                 #mapdiv {height : 400px; width : 400px}
@@ -54,6 +55,12 @@
 
                 //Draw Control
                 var drawControl = new L.Control.Draw({
+                    draw: {
+                        polyline: false,
+                        polygon: false,
+                        circle: false,
+                        marker: false
+                    },
                     edit: {
                         featureGroup: featureGroup
                     }
@@ -62,6 +69,7 @@
                 var inputRectangle;
                 var inputRectangleArray = [];
                 var inputRectangleGeoJSON;
+                var intersections = [];
                 map.on('draw:created', function(e) {
                     featureGroup.addLayer(e.layer);
                     var inputRectangle = e.layer._latlngs[0];
@@ -71,9 +79,11 @@
                     inputRectangleArray.push(inputRectangleArray[0]);
                     inputRectangleArray = convertToLonLat(inputRectangleArray);
                     inputRectangleGeoJSON = arrayToGeoJson(inputRectangleArray);
-                    console.log(inputRectangleGeoJSON);
-                    console.log(route.features[0].geometry.coordinates[0]);
-                    console.log(getAllIntersections(route.features[0].geometry.coordinates[0], inputRectangleGeoJSON.coordinates[0]));
+                    intersections = getAllIntersections(route.features[0].geometry.coordinates[0], inputRectangleGeoJSON.coordinates[0]);
+                    
+                    //for(i = 0; i < intersections.length; i++) {
+                    //    L.geoJSON(arrayToPoint(intersections[i])).addTo(map);
+                    //}
                 });
             </script>
         </body>
