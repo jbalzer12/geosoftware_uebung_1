@@ -158,7 +158,7 @@ function getAllIntersections(route, polygon) {
  * @param
  * @return
  */
- function convertToLonLat(polygon) {
+ function convertToLonLat(polygon) { //swap coordinates
     var swappedPolygon = [];
     for(var i = 0; i < polygon.length; i++) {
         var lon = polygon[i][1];
@@ -173,7 +173,7 @@ function getAllIntersections(route, polygon) {
  * @param
  * @return
  */
-function arrayToPoint(point) {
+function arrayToPoint(point) { // arrray of coordinates to geojson point
     var pointGeoJson = '{' + '"type": "Feature",' + '"properties": {},' + '"geometry": {' + '"type": "Point", "coordinates": [' + point[0] + ',' + point[1] + ']}}';
     return JSON.parse(pointGeoJson);
 }
@@ -185,5 +185,33 @@ function arrayToPoint(point) {
  */
 function intersectionToMap(intersections) {
 
+}
+
+/**
+ * @function
+ * @param
+ * @return
+ */
+function weatherRequest(position, apiKey) { //request wether data to map
+    var request = buildRequest(position, apiKey);
+    console.log(request);
+    {$.ajax({
+        url: request,
+        method: "GET",
+        })
+        .done(function(response) {
+            console.log("Request was successful");
+        })
+        .fail(function(xhr, status, errorThrown) {
+            console.log("Request has failed");
+        })
+        .always(function(xhr, status) {
+            console.log("Request completed");
+        })}
+}
+
+function buildRequest(position, key){
+    api = "https://api.openweathermap.org/data/2.5/onecall?units=metric&lat="+position[1]+"&lon="+position[0]+"&exclude="+"hourly"+"&appid="+key;
+    return api;
 }
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <html>
         <head>
-            <meta charset="UTF-8">
+            <meta charset="UTF-8" />
             <title>Geosoftware I - Uebung 4</title>
             <!--Route-->
             <script type="text/javascript" src="data/route.geojson"></script> 
@@ -19,6 +19,9 @@
             <!--Leaflet Draw-->
             <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.css' rel='stylesheet' />
             <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.js'></script>
+
+            <!--Leaflet Draw-->
+            <script type="text/javascript" src="data/api_keys.js"></script> 
 
             <style type="text/css">
                 #mapdiv {height : 400px; width : 400px}
@@ -85,6 +88,8 @@
                     //    L.geoJSON(arrayToPoint(intersections[i])).addTo(map);
                     //}
                 });
+                pos = [7.5957222282886505,51.9692984513806];
+                weatherRequest(pos, openweather);
             </script>
         </body>
 </html> 
