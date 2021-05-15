@@ -89,7 +89,8 @@
                     var inputRectangle = e.layer._latlngs[0];
                     for(i = 0; i < inputRectangle.length; i++) {
                         inputRectangleArray.push([inputRectangle[i].lat, inputRectangle[i].lng]);
-                    }
+                    };
+                    
                     inputRectangleArray.push(inputRectangleArray[0]);
                     inputRectangleArray = convertToLonLat(inputRectangleArray);
                     inputRectangleGeoJSON = arrayToGeoJson(inputRectangleArray);
@@ -100,7 +101,7 @@
                         marker.addTo(map);
                         markerLayer.addLayer(marker);
                         weatherRequest([intersections[i][0], intersections[i][1]], openweather, marker);
-                    }
+                    };
                 });
             </script>
         </body>
