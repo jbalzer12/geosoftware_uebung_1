@@ -183,8 +183,37 @@ function arrayToPoint(point) { // arrray of coordinates to geojson point
  * @param
  * @return
  */
-function intersectionToMap(intersections) {
-
+function weatherRequest(position, apiKey, marker) { //request weather data to map
+    var request = buildRequest(position, apiKey);
+    var timezone;
+    {$.ajax({
+        url: request,
+        method: "GET",
+        })
+        .done(function(response) {
+            weatherData = response;
+            console.log(weatherData);
+            marker.bindPopup(
+                            '<p  style="font-size: 18px;">Wetter an dieser Position</p>' +
+                            '<p>Ort: ' +  weatherData.lat + ', ' + weatherData.lon + '<br>' +
+                            'Zeitzone: ' + weatherData.timezone + '<br>' +
+                            'Temperatur: ' + weatherData.current.temp + '°C<br>' +
+                            'Luftfeuchte: ' + weatherData.current.humidity + '%<br>' +
+                            'Luftdruck: ' + weatherData.current.pressure + 'hPa<br>' + 
+                            'Wolkenbedeckung: ' + weatherData.current.clouds + '%<br>' + 
+                            'Wetter: ' + weatherData.current.weather[0].description + '</p>'
+            );
+        })
+        .fail(function(xhr, status, errorThrown) {
+            console.log("Request has failed");
+            marker.bindPopup(
+                '<p  style="font-size: 18px;">Wetter an dieser Position</p>' +
+                '<p>Wetterdaten konnten nicht abgerufen werden.</p>'
+            );
+        })
+        .always(function(xhr, status) {
+            console.log("Request completed");
+        })}
 }
 
 /**
@@ -192,26 +221,21 @@ function intersectionToMap(intersections) {
  * @param
  * @return
  */
-function weatherRequest(position, apiKey) { //request wether data to map
-    var request = buildRequest(position, apiKey);
-    console.log(request);
-    {$.ajax({
-        url: request,
-        method: "GET",
-        })
-        .done(function(response) {
-            console.log("Request was successful");
-        })
-        .fail(function(xhr, status, errorThrown) {
-            console.log("Request has failed");
-        })
-        .always(function(xhr, status) {
-            console.log("Request completed");
-        })}
-}
-
 function buildRequest(position, key){
     api = "https://api.openweathermap.org/data/2.5/onecall?units=metric&lat="+position[1]+"&lon="+position[0]+"&exclude="+"hourly"+"&appid="+key;
     return api;
 }
 
+/**
+ * @function
+ * @param
+ * @return
+ */
+ function resetMap(){
+    markerLayer.clearLayers();
+    rectangleLayer.clearLayers();
+    inputRectangleArray = [];
+    intersections = [];
+    
+    return;
+}

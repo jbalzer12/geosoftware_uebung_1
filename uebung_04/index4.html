@@ -19,16 +19,23 @@
             <!--Leaflet Draw-->
             <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.css' rel='stylesheet' />
             <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.js'></script>
-
-            <!--Leaflet Draw-->
+            <!--jQuery-->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <!--Open Weather API Key-->
             <script type="text/javascript" src="data/api_keys.js"></script> 
 
             <style type="text/css">
-                #mapdiv {height : 400px; width : 400px}
+                #mapdiv {height : 600px; width : 600px; z-index: 1;}
+                #resetButton {position: relative; z-index: 100;}
             </style>
         </head>
         <body>
-            <div id="mapdiv"></div>
+            <div id ="mapWrapper">
+                <div id="mapdiv"></div>
+                <div></div>
+                <input type="button" id="resetButton" value="reset intersections" onclick="resetMap()">
+            </div>
+            
             <script>
                 var map = L.map('mapdiv'); //Map Object
 
@@ -43,12 +50,15 @@
                 map.fitBounds(routeLayer.getBounds());
 
                 //Feature Group Layer for the Input Feature from leaflet.draw
-                var featureGroup = L.featureGroup().addTo(map);
+                var rectangleLayer = L.featureGroup().addTo(map);
+                var markerLayer = L.featureGroup().addTo(map);
 
                 //Layer Control
                 //Overlays
 				var overlayMaps = { 
-					"Route": routeLayer
+					"Route": routeLayer,
+                    "Rectangle": rectangleLayer,
+                    "Markers": markerLayer
 				}; 
                 //Basemaps
 				var baseMaps = {
@@ -65,7 +75,7 @@
                         marker: false
                     },
                     edit: {
-                        featureGroup: featureGroup
+                        featureGroup: rectangleLayer
                     }
                 }).addTo(map);
 
@@ -73,8 +83,9 @@
                 var inputRectangleArray = [];
                 var inputRectangleGeoJSON;
                 var intersections = [];
+
                 map.on('draw:created', function(e) {
-                    featureGroup.addLayer(e.layer);
+                    rectangleLayer.addLayer(e.layer);
                     var inputRectangle = e.layer._latlngs[0];
                     for(i = 0; i < inputRectangle.length; i++) {
                         inputRectangleArray.push([inputRectangle[i].lat, inputRectangle[i].lng]);
@@ -83,13 +94,14 @@
                     inputRectangleArray = convertToLonLat(inputRectangleArray);
                     inputRectangleGeoJSON = arrayToGeoJson(inputRectangleArray);
                     intersections = getAllIntersections(route.features[0].geometry.coordinates[0], inputRectangleGeoJSON.coordinates[0]);
-                    
-                    //for(i = 0; i < intersections.length; i++) {
-                    //    L.geoJSON(arrayToPoint(intersections[i])).addTo(map);
-                    //}
+
+                    for(i = 0; i < intersections.length; i++) {
+                        var marker = new L.Marker([intersections[i][1], intersections[i][0]]);
+                        marker.addTo(map);
+                        markerLayer.addLayer(marker);
+                        weatherRequest([intersections[i][0], intersections[i][1]], openweather, marker);
+                    }
                 });
-                pos = [7.5957222282886505,51.9692984513806];
-                weatherRequest(pos, openweather);
             </script>
         </body>
 </html> 
