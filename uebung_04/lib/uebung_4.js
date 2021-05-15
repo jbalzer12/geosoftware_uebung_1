@@ -191,17 +191,15 @@ function weatherRequest(position, apiKey, marker) { //request weather data to ma
         method: "GET",
         })
         .done(function(response) {
-            weatherData = response;
-            console.log(weatherData);
             marker.bindPopup(
                             '<p  style="font-size: 18px;">Wetter an dieser Position</p>' +
-                            '<p>Ort: ' +  weatherData.lat + ', ' + weatherData.lon + '<br>' +
-                            'Zeitzone: ' + weatherData.timezone + '<br>' +
-                            'Temperatur: ' + weatherData.current.temp + '°C<br>' +
-                            'Luftfeuchte: ' + weatherData.current.humidity + '%<br>' +
-                            'Luftdruck: ' + weatherData.current.pressure + 'hPa<br>' + 
-                            'Wolkenbedeckung: ' + weatherData.current.clouds + '%<br>' + 
-                            'Wetter: ' + weatherData.current.weather[0].description + '</p>'
+                            '<p>Ort: ' +  response.lat + ', ' + response.lon + '<br>' +
+                            'Zeitzone: ' + response.timezone + '<br>' +
+                            'Temperatur: ' + response.current.temp + '°C<br>' +
+                            'Luftfeuchte: ' + response.current.humidity + '%<br>' +
+                            'Luftdruck: ' + response.current.pressure + 'hPa<br>' + 
+                            'Wolkenbedeckung: ' + response.current.clouds + '%<br>' + 
+                            'Wetter: ' + response.current.weather[0].description + '</p>'
             );
         })
         .fail(function(xhr, status, errorThrown) {
@@ -236,6 +234,5 @@ function buildRequest(position, key){
     rectangleLayer.clearLayers();
     inputRectangleArray = [];
     intersections = [];
-    
     return;
 }
