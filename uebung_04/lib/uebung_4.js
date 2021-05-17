@@ -1,7 +1,10 @@
 //Functions
 /**
 * @function 
-* @param {Array} pointA, {Array} pointB, {Array} pointC, {Array} pointD - needs two lines defines by four points
+* @param {Array} pointA
+* @param {Array} pointB
+* @param {Array} pointC
+* @param {Array} pointD 
 * @return {Array} intersect - returns the longitude and latitude of the intersection !which means we have to check if the lines do even intersect - otherwise the result is nonsense!
 */
 function lineIntersection(pointA, pointB, pointC, pointD) { 
@@ -25,7 +28,9 @@ function lineIntersection(pointA, pointB, pointC, pointD) {
 
 /**
 * @function 
-* @param {Array} pointA, {Array} pointB, {Array} pointC
+* @param {Array} pointA
+* @param {Array} pointB
+* @param {Array} pointC
 * @return {integer} - returns 1, 0, -1
 */
 function getDirection(pointA, pointB, pointC) {
@@ -42,7 +47,9 @@ function getDirection(pointA, pointB, pointC) {
 
 /**
 * @function 
-* @param {Array} pointA, {Array} pointB, {Array} pointC
+* @param {Array} pointA
+* @param {Array} pointB
+* @param {Array} pointC
 * @return {boolean} - returns true or false
 */
 function containsSegment(pointA, pointB, pointC) {
@@ -66,7 +73,10 @@ function containsSegment(pointA, pointB, pointC) {
 
 /**
 * @function 
-* @param {Array} pointA, {Array} pointB, {Array} pointC, {Array} pointD - needs for points which define two segments
+* @param {Array} pointA
+* @param {Array} pointB
+* @param {Array} pointC
+* @param {Array} pointD 
 * @return {boolean} - returns true if the segments intersect
 */
 function hasIntersection(pointA, pointB, pointC, pointD) {
@@ -138,7 +148,8 @@ function arrayToPolygon(array) {
 
 /**
  * @function
- * @param
+ * @param {Array} route - array which contains the coordinates of the route
+ * @param {Array} polygon - array which contains the coordinates of the polygon
  * @return
  */
 function getAllIntersections(route, polygon) {
@@ -155,84 +166,87 @@ function getAllIntersections(route, polygon) {
 
 /**
  * @function
- * @param
- * @return
+ * @param {array} polygon - input needs to be an array with the coordinates of the polygon
+ * @return {array} - outputs the same polygon but with swapped coordinates
  */
  function convertToLonLat(polygon) { //swap coordinates
-    var swappedPolygon = [];
-    for(var i = 0; i < polygon.length; i++) {
+    var swappedPolygon = []; //initialize output
+    for(var i = 0; i < polygon.length; i++) { //iterate over the polygon
         var lon = polygon[i][1];
         var lat = polygon[i][0];
-        swappedPolygon.push([lon, lat]);
+        swappedPolygon.push([lon, lat]); //push swapped coordinate
     }
-    return swappedPolygon;
+    return swappedPolygon; //return the swapped coordinates
 }
 
 /**
  * @function
- * @param
- * @return
+ * @param {array} point - input needs to be an array which contains a coordinate which represents a position
+ * @return {geoJSON} returns the point formatted as a geoJSON
  */
 function arrayToPoint(point) { // arrray of coordinates to geojson point
+    //create a geoJSON as a String by concatinating 
     var pointGeoJson = '{' + '"type": "Feature",' + '"properties": {},' + '"geometry": {' + '"type": "Point", "coordinates": [' + point[0] + ',' + point[1] + ']}}';
-    return JSON.parse(pointGeoJson);
+    return JSON.parse(pointGeoJson); //return the parsed String -> a geoJSON
 }
 
 /**
  * @function
- * @param
+ * @param {array} position - the position for the request as an array
+ * @param {apiKey} openWeather_key - the openWeather API-key
+ * @param {L.Marker} marker - the marker which represents the requested position on the map
  * @return
  */
-function weatherRequest(position, apiKey, marker) { //request weather data to map
-    var request = buildRequest(position, apiKey);
-    var timezone;
-    {$.ajax({
-        url: request,
-        method: "GET",
+function weatherRequest(position, apiKey, marker) { 
+    var request = buildRequest(position, apiKey); //build the request for the position
+    {$.ajax({ //handle request via ajax
+        url: request, //request url is the prebuild request
+        method: "GET", //method is GET since we want to get data not post or update it
         })
-        .done(function(response) {
-            marker.bindPopup(
+        .done(function(response) { //if the request is done -> successful
+            //bind a popupto the given marker / the popupt is formatted in HTML and 
+            //is enriched with information extracted from the api response
+            marker.bindPopup( 
                             '<p  style="font-size: 18px;">Wetter an dieser Position</p>' +
-                            '<p>Ort: ' +  response.lat + ', ' + response.lon + '<br>' +
-                            'Zeitzone: ' + response.timezone + '<br>' +
-                            'Temperatur: ' + response.current.temp + '°C<br>' +
-                            'Luftfeuchte: ' + response.current.humidity + '%<br>' +
-                            'Luftdruck: ' + response.current.pressure + 'hPa<br>' + 
-                            'Wolkenbedeckung: ' + response.current.clouds + '%<br>' + 
-                            'Wetter: ' + response.current.weather[0].description + '</p>'
+                            '<p>Ort: ' +  response.lat + ', ' + response.lon + '<br>' + //position
+                            'Zeitzone: ' + response.timezone + '<br>' + //timezone
+                            'Temperatur: ' + response.current.temp + '°C<br>' + //temperature
+                            'Luftfeuchte: ' + response.current.humidity + '%<br>' + //humidity
+                            'Luftdruck: ' + response.current.pressure + 'hPa<br>' + //pressure
+                            'Wolkenbedeckung: ' + response.current.clouds + '%<br>' + //cloud cover
+                            'Wetter: ' + response.current.weather[0].description + '</p>' //openWeather short classification
             );
         })
-        .fail(function(xhr, status, errorThrown) {
-            console.log("Request has failed");
-            marker.bindPopup(
+        .fail(function(xhr, status, errorThrown) { //if the request fails (for some reason)
+            console.log("Request has failed :(", '/n', "Status: " + status, '/n', "Error: " + errorThrown); //we log a message on the console
+            marker.bindPopup( //and bind a "error" popup to the given marker
                 '<p  style="font-size: 18px;">Wetter an dieser Position</p>' +
                 '<p>Wetterdaten konnten nicht abgerufen werden.</p>'
             );
         })
-        .always(function(xhr, status) {
-            console.log("Request completed");
+        .always(function(xhr, status) { //if the request is "closed", either successful or not 
+            console.log("Request completed"); //a short message is logged
         })}
 }
 
 /**
  * @function
- * @param
- * @return
+ * @param {array} position - the position for the request as an array
+ * @param {apiKey} openWeather_key - the openWeather API-key
+ * @return {String} - returns a valid openWeather request for the given position
  */
 function buildRequest(position, key){
-    api = "https://api.openweathermap.org/data/2.5/onecall?units=metric&lat="+position[1]+"&lon="+position[0]+"&exclude="+"hourly"+"&appid="+key;
+    //create the request by concatenating a String / here we request meatric measurements
+    var api = "https://api.openweathermap.org/data/2.5/onecall?units=metric&lat="+position[1]+"&lon="+position[0]+"&exclude="+"hourly"+"&appid="+key;
     return api;
 }
 
 /**
  * @function
- * @param
  * @return
  */
- function resetMap(){
-    markerLayer.clearLayers();
-    rectangleLayer.clearLayers();
-    inputRectangleArray = [];
-    intersections = [];
-    return;
+ function resetMap(){ //function for the reset button
+    markerLayer.clearLayers(); //clear all markers
+    rectangleLayer.clearLayers(); //clear all rectangles
+    intersections = []; //clear the intersections
 }

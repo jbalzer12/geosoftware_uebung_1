@@ -24,19 +24,20 @@
             <!--Open Weather API Key-->
             <script type="text/javascript" src="data/api_keys.js"></script> 
 
+            <!--Style for the map container-->
             <style type="text/css">
-                #mapdiv {height : 600px; width : 600px; z-index: 1;}
+                #mapdiv {height : 600px; width : 600px;}
             </style>
         </head>
         <body>
-            <div id ="mapWrapper">
+                <!--div to store the map-->
                 <div id="mapdiv"></div>
-                <div></div>
+                <!--button to reset the map-->
                 <input type="button" id="resetButton" value="reset intersections" onclick="resetMap()">
-            </div>
             
             <script>
-                var map = L.map('mapdiv'); //Map Object
+                //Map Object
+                var map = L.map('mapdiv'); 
 
                 //Basemap Layer
                 var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -45,62 +46,76 @@
 
                 //Route layer
                 var routeLayer = L.geoJSON(route).addTo(map);
+
                 //Fit Bounds to the Route
                 map.fitBounds(routeLayer.getBounds());
 
-                //Feature Group Layer for the Input Feature from leaflet.draw
+                //Feature Group Layers for the Input Features
                 var rectangleLayer = L.featureGroup().addTo(map);
                 var markerLayer = L.featureGroup().addTo(map);
 
                 //Layer Control
                 //Overlays
 				var overlayMaps = { 
-					"Route": routeLayer,
-                    "Rectangle": rectangleLayer,
-                    "Markers": markerLayer
+					"Route": routeLayer, //Route
+                    "Rectangle": rectangleLayer, //Rectangle
+                    "Markers": markerLayer //Markers
 				}; 
                 //Basemaps
 				var baseMaps = {
-					"OSM": osm
+					"OSM": osm //OSM as Basemap
 				}; 
+                //add layerc ontrol to the map
 				L.control.layers(baseMaps, overlayMaps).addTo(map);
 
                 //Draw Control
                 var drawControl = new L.Control.Draw({
                     draw: {
-                        polyline: false,
+                        //disable all draw functions but the rectangle
+                        polyline: false, 
                         polygon: false,
                         circle: false,
                         marker: false
                     },
                     edit: {
+                        //drawn features will be stored in the rectangleLayer
                         featureGroup: rectangleLayer
                     }
-                }).addTo(map);
+                }).addTo(map); //add the control to the map
 
-                var inputRectangle;
-                var inputRectangleArray = [];
-                var inputRectangleGeoJSON;
-                var intersections = [];
+                //initialize variables for the algorithm
+                var inputRectangle; //varibale for storing the extracted leaflet draw object
+                var inputRectangleArray = []; //array for storing the coordinates of the drawn rectangle
+                var inputRectangleGeoJSON; //variable for storing the drawn rectangle converted to a geojson
+                var intersections = []; //array for storing the intersections of the route with the drawn rectangle
 
+                //start the "calculation" as soon as a rectangle is drawn on the map
                 map.on('draw:created', function(e) {
-                    rectangleLayer.addLayer(e.layer);
-                    var inputRectangle = e.layer._latlngs[0];
+                    rectangleLayer.addLayer(e.layer); //add the rectangle to the layer
+                    var inputRectangle = e.layer._latlngs[0]; //extract the rectangle coordinates 
                     
+                    //push the rectangle verticies into an array
                     for(i = 0; i < inputRectangle.length; i++) {
                         inputRectangleArray.push([inputRectangle[i].lat, inputRectangle[i].lng]);
                     };
                     
-                    inputRectangleArray.push(inputRectangleArray[0]);
-                    inputRectangleArray = convertToLonLat(inputRectangleArray);
-                    inputRectangleGeoJSON = arrayToGeoJson(inputRectangleArray);
+                    inputRectangleArray.push(inputRectangleArray[0]); //push the last vertex to the array to conform to the geoJSON encoding
+                    inputRectangleArray = convertToLonLat(inputRectangleArray); //swap coordinates
+                    inputRectangleGeoJSON = arrayToGeoJson(inputRectangleArray); //convert array to a geoJSON
+
+                    //calculate intersections
                     intersections = getAllIntersections(route.features[0].geometry.coordinates[0], inputRectangleGeoJSON.coordinates[0]);
 
-                    for(i = 0; i < intersections.length; i++) {
-                        var marker = new L.Marker([intersections[i][1], intersections[i][0]]);
-                        marker.addTo(map);
-                        markerLayer.addLayer(marker);
-                        weatherRequest([intersections[i][0], intersections[i][1]], openweather, marker);
+                    //empty used array to enbale a clean second input
+                    inputRectangleArray = [];
+                    inputRectangleArray = [];
+                    inputRectangleGeoJSON = [];
+
+                    for(i = 0; i < intersections.length; i++) { //for every intersection
+                        var marker = new L.Marker([intersections[i][1], intersections[i][0]]); //create a marker variable
+                        marker.addTo(map); //place the marker to the map
+                        markerLayer.addLayer(marker); //add the marker to the corresponding layer
+                        weatherRequest([intersections[i][0], intersections[i][1]], openweather, marker); //perform a weather request for the marker
                     };
                 });
             </script>
