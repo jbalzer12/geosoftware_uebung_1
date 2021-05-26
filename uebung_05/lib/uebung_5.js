@@ -14,7 +14,7 @@ function lineIntersection(pointA, pointB, pointC, pointD) {
     var latB = pointB[1];
     var lonB = pointB[0];
     var latC = pointC[1];
-    var lonC = pointC[0];
+    var lonC = pointC[0];   
     var latD = pointD[1];
     var lonD = pointD[0];
 

@@ -1,0 +1,111 @@
+#mapdiv {
+    position: relative;
+    border: 1px solid black;
+    border-radius: 4px;
+    height: 600px;
+    min-height: 20px;  
+    min-width: 20px;
+    width: 50%;
+}
+
+.header {
+    overflow: hidden;
+    background-color: #2e629f;
+    width: 50%;
+}
+
+footer {
+    width: 50%;
+}
+
+.container {
+    overflow: hidden;
+    background-color: #2e629f;
+    display: block;
+}
+
+.header a {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 25px;
+    border-radius: 4px;
+}
+
+.header input {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 25px;
+    border-radius: 4px;
+}
+
+.header a.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.header-right {
+    float: right;
+}
+
+@media screen and (min-windth: 50px) {
+    .header a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+    .header-right {
+      float: none;
+    }
+}
+
+@media only screen and (min-width: 400px) {
+    #mapdiv {
+        position: relative;
+        border: 1px solid black;
+        border-radius: 4px;
+        height: 600px;
+        min-height: 20px;  
+        min-width: 20px;
+        width: 50%;
+    }
+    
+    .header {
+        overflow: hidden;
+        background-color: #2e629f;
+        width: 50%;
+    }
+    
+    footer {
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #mapdiv {
+        position: relative;
+        border: 1px solid black;
+        border-radius: 4px;
+        height: 600px;
+        min-height: 20px;  
+        min-width: 20px;
+        width: 100%;
+    }
+    
+    .header {
+        overflow: hidden;
+        background-color: #2e629f;
+        width: 100%;
+    }
+    
+    footer {
+        width: 100%;
+    }
+}
