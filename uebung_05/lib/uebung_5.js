@@ -250,3 +250,13 @@ function buildRequest(position, key){
     rectangleLayer.clearLayers(); //clear all rectangles
     intersections = []; //clear the intersections
 }
+
+/**
+ * @function
+ * @return
+ */
+ function goToIfGi(){ //function for the reset button
+    window.open("https://www.uni-muenster.de/Geoinformatics/"); 
+}
+
+

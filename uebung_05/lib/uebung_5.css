@@ -6,6 +6,19 @@
     min-height: 20px;  
     min-width: 20px;
     width: 50%;
+    margin: auto;
+}
+
+#bg-head {
+    background-color: #2e629f; 
+}
+
+#navbar_container {
+    background-color: #2e629f; 
+}
+
+.navbar {
+    background-color: #2e629f; 
 }
 
 .header {
@@ -77,18 +90,15 @@ footer {
         width: 50%;
     }
     
-    .navbar {
-        overflow: hidden;
-        background-color: #2e629f;
-        width: 50%;
-    }
-    
     footer {
-        width: 50%;
+        width: 100%;
+    }
+    #bg-head {
+        width: 100%;
     }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 991px) {
     #mapdiv {
         position: relative;
         border: 1px solid black;
@@ -97,18 +107,18 @@ footer {
         min-height: 20px;  
         min-width: 20px;
         width: 100%;
-    }
-    
-    .navbar {
-        overflow: hidden;
-        background-color: #2e629f;
-        width: 100%;
+        margin: auto;
     }
     
     footer {
         width: 100%;
     }
+
+    #bg-head {
+        width: 100%;
+    }
 }
+
 
 
 
