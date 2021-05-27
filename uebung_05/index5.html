@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
         <head>
             <meta  name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8" />
             <title>Geosoftware I - Uebung 5</title>
@@ -33,91 +33,90 @@
             </div>
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div id="navbar_container" class="container-fluid">
-                  <a class="navbar-brand text-white" href="#">Options</a>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <button type="button" class="btn btn-primary" onclick="resetMap()">
-                        reset Map
-                        </button>
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#aboutModal">
-                        About
-                      </button>
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal">
-                        Contact
-                      </button>
-                      <button type="button" class="btn btn-primary" onclick="goToIfGi()">
-                        IfGi
+                    <a class="navbar-brand text-white" href="#">Options</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
                     </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <button type="button" class="btn btn-primary" onclick="resetMap()">
+                                reset Map
+                            </button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#aboutModal">
+                                About
+                            </button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal">
+                                Contact
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="goToIfGi()">
+                                IfGi
+                            </button>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </nav>
-            <div class="container-fluid">
-                <!--div to store the map-->
-                <div id="mapdiv">
-                </div>
+            <div id="mapdiv">
             </div>
-            <footer class="bg-light text-center text-lg-start text-white">
-                <!-- Copyright -->
+            <div class="fixed-bottom">
+            <footer class="footer text-center text-lg-start text-white">
                 <div class="text-center p-3" style="background-color: rgba(46, 98, 159);">
                     ©Alexander Pilz 2021:
-                    <a class="text-white" href="https://github.com/xcomagent95/geosoftware_uebung_1/tree/main/uebung_05"> xcomagent95@GitHub</a>
+                    <a class="text-white" href="https://github.com/xcomagent95/geosoftware_uebung_1/tree/main/uebung_05">xcomagent95@GitHub</a>
+                    ©OpenStreetmap:
+                    <a class="text-white" href="https://www.openstreetmap.de/">openstreetmap.de</a>
                 </div>
             </footer>
-
-            <!-- About-Modal -->
-            <div class="modal fade" id="aboutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">About</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>
-                                    This website enables the user to draw a rectangle onto the map canvas. The drawn rectangle is then intersected with
-                                    a predefined route. For every intersection, an popup with information about the currect weather, is created. 
-                                    These popups can be viewed by clicking on the corresponding marker. If the map gets to cluttered it can be reset in the 
-                                    options.
-                                </p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                    </div>
-                </div>
             </div>
-            <div class="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+        <!-- About-Modal -->
+        <div class="modal fade" id="aboutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Contact</h5>
+                            <h5 class="modal-title" id="staticBackdropLabel">About</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p>
-                                This website was created by Alexander Pilz, Student of Geoinformatics at Westfälische Wilhelms-Universität, Münster
+                                This website enables the user to draw a rectangle onto the map canvas. The drawn rectangle is then intersected with
+                                a predefined route. For every intersection, an popup with information about the currect weather, is created. 
+                                These popups can be viewed by clicking on the corresponding marker. If the map gets to cluttered it can be reset in the 
+                                options. The weather data is fetched from OpenWeather via their OneCall API.
                             </p>
-                            <p>
-                                You can view the code at GitHub or contact me via email at apilz@uni-muenster.de
-                            </p>
-                            </div>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
+                </div>
+            </div>
+        </div>
+        <!-- Contact-Modal -->
+        <div class="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Contact</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            This website was created by Alexander Pilz, Student of Geoinformatics at Westfälische Wilhelms-Universität, Münster
+                        </p>
+                        <p>
+                            You can view the code at GitHub or contact me via email at apilz@uni-muenster.de
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
+        </div>
             <script>
                 //Map Object
                 var map = L.map('mapdiv'); 
 
                 //Basemap Layer
                 var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-					attribution: '&copy; <a href = "http://osm.org/copyright">OpenStreetMap</a> contributors'
 				}).addTo(map); 
 
                 //Route layer

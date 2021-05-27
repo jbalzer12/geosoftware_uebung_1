@@ -255,7 +255,7 @@ function buildRequest(position, key){
  * @function
  * @return
  */
- function goToIfGi(){ //function for the reset button
+ function goToIfGi(){ 
     window.open("https://www.uni-muenster.de/Geoinformatics/"); 
 }
 
