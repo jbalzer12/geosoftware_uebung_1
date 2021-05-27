@@ -66,7 +66,7 @@ footer {
     }
 }
 
-@media only screen and (min-width: 400px) {
+@media only screen and (min-width: 992px) {
     #mapdiv {
         position: relative;
         border: 1px solid black;
@@ -77,7 +77,7 @@ footer {
         width: 50%;
     }
     
-    .header {
+    .navbar {
         overflow: hidden;
         background-color: #2e629f;
         width: 50%;
@@ -99,7 +99,7 @@ footer {
         width: 100%;
     }
     
-    .header {
+    .navbar {
         overflow: hidden;
         background-color: #2e629f;
         width: 100%;
@@ -109,3 +109,6 @@ footer {
         width: 100%;
     }
 }
+
+
+
