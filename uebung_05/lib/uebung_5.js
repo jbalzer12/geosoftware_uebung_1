@@ -221,7 +221,9 @@ function weatherRequest(position, apiKey, marker) {
             console.log("Request has failed :(", '/n', "Status: " + status, '/n', "Error: " + errorThrown); //we log a message on the console
             marker.bindPopup( //and bind a "error" popup to the given marker
                 '<p  style="font-size: 18px;">Wetter an dieser Position</p>' +
-                '<p>Wetterdaten konnten nicht abgerufen werden.</p>'
+                '<p>Wetterdaten konnten nicht abgerufen werden.</p>' + 
+                '<p>Prüfen sie ihre Internetverbindung und die Gültigkeit ihres eingegebenen API-Schlüssels!</p>' + 
+                '<p>Sollte das Problem weiter bestehen konsultiren openWeather direkt!</p>'
             );
         })
         .always(function(xhr, status) { //if the request is "closed", either successful or not 
@@ -256,7 +258,32 @@ function buildRequest(position, key){
  * @return
  */
  function goToIfGi(){ 
-    window.open("https://www.uni-muenster.de/Geoinformatics/"); 
+    window.open("https://www.uni-muenster.de/Geoinformatics/"); //route user to the IfGi webpage
+}
+
+/**
+ * @function
+ * @return
+ */
+function getAPIKey() {
+    var value = document.getElementById("api_key_input").value; //read content from field
+    openweather = value; //store the value inside variable
+    checkAPIKey(); //check the key
+}
+
+function checkAPIKey() {
+    var url = buildRequest([7.595715522766113, 51.969495094294324], openweather); 
+    console.log(url);
+    function httpGet(url) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", url, false ); // false for synchronous request
+        xmlHttp.send( null );
+        var response = JSON.parse(xmlHttp.responseText);
+        if(response.cod != 401) {
+            document.getElementById("input_button").className = "btn btn-success";
+        }
+    }
+    httpGet(url);
 }
 
 
