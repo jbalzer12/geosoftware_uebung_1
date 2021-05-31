@@ -27,10 +27,12 @@
             <link href="lib/uebung_5.css" rel="stylesheet">
         </head>
         <body>
+            <!--Header-->
             <div id="bg-head">
                 <h1 id="title" class="d-block p-2 text-white">Geosoftware 1, 2021 - Übung 5</h1>
                 <p id="subtitle" class="d-block p-2 text-white">Weather@Intersection by Alexander Pilz</p> 
             </div>
+            <!--Navbar-->
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div id="navbar_container" class="container-fluid">
                     <a class="navbar-brand text-white" href="#">Options</a>
@@ -39,6 +41,7 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
+                            <!--Buttons-->
                             <button type="button" class="btn btn-primary" onclick="resetMap()">
                                 reset Map
                             </button>
@@ -58,17 +61,19 @@
                     </div>
                 </div>
             </nav>
+            <!---->
             <div id="mapdiv">
             </div>
+            <!--Footer-->
             <div class="fixed-bottom">
-            <footer class="footer text-center text-lg-start text-white">
-                <div class="text-center p-3" style="background-color: rgba(46, 98, 159);">
-                    ©Alexander Pilz 2021:
-                    <a class="text-white" href="https://github.com/xcomagent95/geosoftware_uebung_1/tree/main/uebung_05">xcomagent95@GitHub</a>
-                    ©OpenStreetmap:
-                    <a class="text-white" href="https://www.openstreetmap.de/">openstreetmap.de</a>
-                </div>
-            </footer>
+                <footer class="footer text-center text-lg-start text-white">
+                    <div class="text-center p-3" style="background-color: rgba(46, 98, 159);">
+                        ©Alexander Pilz 2021:
+                        <a class="text-white" href="https://github.com/xcomagent95/geosoftware_uebung_1/tree/main/uebung_05">xcomagent95@GitHub</a>
+                        ©OpenStreetmap:
+                        <a class="text-white" href="https://www.openstreetmap.de/">openstreetmap.de</a>
+                    </div>
+                </footer>
             </div>
         <!-- About-Modal -->
         <div class="modal fade" id="aboutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -111,7 +116,7 @@
                                 <label for="api_key">API-key</label><br>
                                 <input type="text" id="api_key_input" name="api_key"><br>
                                 <input type="submit" value="Submit" onclick="getAPIKey()">
-                              </form> 
+                            </form> 
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

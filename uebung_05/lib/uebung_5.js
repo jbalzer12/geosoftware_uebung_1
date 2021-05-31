@@ -271,16 +271,20 @@ function getAPIKey() {
     checkAPIKey(); //check the key
 }
 
+/**
+ * @function
+ * @return
+ */
 function checkAPIKey() {
-    var url = buildRequest([7.595715522766113, 51.969495094294324], openweather); 
-    console.log(url);
+    var url = buildRequest([7.595715522766113, 51.969495094294324], openweather); //teste request at IfGi
+    //console.log(url);
     function httpGet(url) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open( "GET", url, false ); // false for synchronous request
-        xmlHttp.send( null );
+        xmlHttp.send( null ); 
         var response = JSON.parse(xmlHttp.responseText);
-        if(response.cod != 401) {
-            document.getElementById("input_button").className = "btn btn-success";
+        if(response.cod != 401) { //if no error code ist returned
+            document.getElementById("input_button").className = "btn btn-success"; //chnge button color by class to green
         }
     }
     httpGet(url);
