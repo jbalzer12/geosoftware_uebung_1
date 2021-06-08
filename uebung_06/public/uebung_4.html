@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">   
+        <!--Bootstrap-->
+        <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+        <script src="/bootstrap/dist/js/bootstrap.js"></script>
+        <!--Leaflet-->
+        <link rel="stylesheet" href="/leaflet/dist/leaflet.css"/>
+        <script type="text/javascript" src="/leaflet/dist/leaflet.js"></script>
+        <!--Leaflet Draw-->
+        <link rel="stylesheet" href='/leaflet-draw/dist/leaflet.draw.css'/>
+        <script src='/leaflet-draw/dist/leaflet.draw.js'></script>
+        <!--jQuery-->
+        <script src="/jquerry/jquerry.js"></script>
+        <!--Style-->
+        <link rel="stylesheet" type="text/css" href="/css/uebung_4.css">
+        <!--Functions-->
+        <script type="text/javascript" src="/js/uebung_4.js"></script> 
+        <!--Route-->
+        <script type="text/javascript" src="data/route.json"></script> 
+    </head>
+    <body>
+        <div id="bg-head">
+            <h1 id="title" class="d-block p-2 bg-dark text-white">Geosoftware 1, 2021 - Übung 4 </h1>
+            <p id="subtitle" class="d-block p-2 bg-dark text-white">Abgabe von: J. Balzer</p> 
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="./index.html">Übungen</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="./index.html">Übersicht</a>
+                        <a class="nav-link active" aria-current="page" href="./uebung_2.html">Übung 2</a>
+                        <a class="nav-link active" aria-current="page" href="./uebung_4.html">Übung 4</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="mainDiv">
+            <p>Hier zunächst den API-Key eingeben:</p>
+            <input id="apiField" placeholder="Hier OpenWeather API-Key eingeben"/><br><br>
+        </div>
+        <div id="map"></div>
+        <!-- Footer -->
+        <footer id="footer" class="bg-dark text-center text-lg-start text-white sticky-bottom">
+            <!-- Copyright -->
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+              © 2020 Copyright: J. Balzer
+            </div>
+            <!-- Copyright -->
+        </footer>
+    </body>
+    <script>
+        // ------------------------ Everything needed for the leaflet map ----------------------------
+        // Set map 
+        var map = L.map('map').setView([51.975, 7.61], 13) 
+
+        // Try to make the height responsive too. But so far it doesn't work
+        let deviceHeight = window.innerHeight * 0.01
+        document.documentElement.style.setProperty('--deviceHeight', `${deviceHeight}px`)
+
+        // Add an OpenStreetMap tile layer and keep reference in variable
+        var osmLayer = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+            {attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
+
+        // Adds the given route to the map
+        var geodata = L.geoJson(routeJson)
+        // Names the route for a popup
+        geodata.bindPopup(routeJson.features[0].properties.name).addTo(map)
+        map.fitBounds(geodata.getBounds());
+        // Initializes "FaetureGroup"-object for the drawn elements
+        var drawnItems = new L.FeatureGroup()
+        // Adds drawn elements to the map
+        map.addLayer(drawnItems)
+        // Builds draw-control with everything, except the rectangle, deactivated
+        var drawControl = new L.Control.Draw({
+            draw:{
+                marker: false,
+                polyline: false,
+                circle: false,
+                circlemarker: false,
+                polygon: false,
+                rectangle: {
+                    showArea: true,
+                    metric: ['km', 'm'],
+                    drawError: 'orange'
+                }
+            },
+            edit: {
+                featureGroup: drawnItems, // Says that everything that gets drawn gets added to this FeatureGroup
+                remove: true
+            }
+        })
+        // Adds the control-element
+        map.addControl(drawControl)
+
+        // Shows the drawn rectangle on the map and save the coordinates of the rectagle as variable 'rectangle'
+        let rectangle
+        map.on('draw:created', function (e){
+            var type = e.layerType, layer = e.layer
+            rectangle = layer.getLatLngs()
+            drawnItems.addLayer(layer)
+            mainCalculation(routeJson)
+        })
+    </script>
+</html>
