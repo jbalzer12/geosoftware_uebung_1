@@ -14,6 +14,7 @@ app.use(express.static(__dirname + '/node_modules'));
 app.use('/search', searchRouter);
 app.use('/add', addRouter);
 app.use('/index', express.static(__dirname + '/index.html'));
+app.use('/table', express.static(__dirname + '/uebung_2.html'));
 
 app.get("/index", (req, res) => { res.sendFile(__dirname + "/public/index.html"); });
 
